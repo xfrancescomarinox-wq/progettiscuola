@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>La Piramide — Manuale di Geometria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --sand:     #f5e6c8;
+      --ochre:    #c8922a;
+      --deep:     #1a0f00;
+      --gold:     #e8b84b;
+      --rust:     #8b3a00;
+      --stone:    #d4b896;
+      --ivory:    #fdf6e3;
+      --shadow:   rgba(26,15,0,0.18);
+      --accent:   #3d7a5e;
+      --accent2:  #5ba080;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--ivory);
+      color: var(--deep);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ─────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      background: linear-gradient(160deg, #1a0f00 0%, #3b1f00 55%, #6b3a0f 100%);
+      color: var(--sand);
+      text-align: center;
+      padding: 80px 24px 100px;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent, transparent 30px,
+        rgba(200,146,42,0.06) 30px, rgba(200,146,42,0.06) 31px
+      );
+    }
+    /* big decorative pyramid SVG */
+    .hero-pyramid {
+      display: block;
+      margin: 0 auto 32px;
+      filter: drop-shadow(0 8px 32px rgba(232,184,75,0.4));
+      animation: floatPyr 4s ease-in-out infinite;
+    }
+    @keyframes floatPyr {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+    .hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.2rem, 6vw, 4.4rem);
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      color: var(--gold);
+      text-shadow: 0 2px 20px rgba(200,146,42,0.6);
+      margin-bottom: 14px;
+    }
+    .hero p.subtitle {
+      font-size: 1.1rem;
+      color: var(--stone);
+      font-style: italic;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ── NAV ──────────────────────────────────────────────── */
+    nav.toc {
+      background: var(--deep);
+      color: var(--sand);
+      padding: 20px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px var(--shadow);
+    }
+    nav.toc a {
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: var(--stone);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+    nav.toc a:hover { color: var(--gold); }
+
+    /* ── WRAPPER ──────────────────────────────────────────── */
+    .content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    /* ── SECTION TITLES ───────────────────────────────────── */
+    .section {
+      margin-top: 72px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .section-num {
+      font-family: 'Cinzel', serif;
+      font-size: 3.2rem;
+      font-weight: 900;
+      color: var(--ochre);
+      opacity: 0.25;
+      line-height: 1;
+      min-width: 56px;
+    }
+    .section h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 600;
+      color: var(--rust);
+      border-bottom: 3px solid var(--ochre);
+      padding-bottom: 6px;
+    }
+
+    h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--rust);
+      margin: 30px 0 10px;
+    }
+
+    p { margin-bottom: 14px; }
+
+    /* ── INFO BOXES ───────────────────────────────────────── */
+    .box {
+      border-radius: 12px;
+      padding: 22px 26px;
+      margin: 22px 0;
+    }
+    .box-def {
+      background: #fff8ec;
+      border-left: 5px solid var(--ochre);
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+    .box-formula {
+      background: linear-gradient(135deg, #1a3a2a 0%, #0f2019 100%);
+      color: #d4f0e0;
+      border-left: 5px solid var(--accent2);
+      box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+    }
+    .box-formula h3 { color: #8fe8ba; margin-top: 0; }
+    .box-formula .formula {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      color: #b9fcd8;
+      background: rgba(255,255,255,0.07);
+      border-radius: 8px;
+      padding: 12px 18px;
+      margin: 10px 0;
+      display: inline-block;
+    }
+    .box-tip {
+      background: #fff4f0;
+      border-left: 5px solid var(--rust);
+    }
+    .box-tip strong { color: var(--rust); }
+    .box-remember {
+      background: #fffbea;
+      border: 2px dashed var(--gold);
+      border-radius: 12px;
+      padding: 18px 24px;
+    }
+
+    /* ── DIAGRAM AREA ─────────────────────────────────────── */
+    .diagram-wrap {
+      text-align: center;
+      margin: 32px 0;
+    }
+    .diagram-wrap svg {
+      max-width: 100%;
+      filter: drop-shadow(0 4px 16px var(--shadow));
+    }
+    .diagram-caption {
+      font-style: italic;
+      color: #6b5030;
+      font-size: 0.92rem;
+      margin-top: 8px;
+    }
+
+    /* ── TABLE ────────────────────────────────────────────── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 22px 0;
+      font-size: 0.96rem;
+    }
+    th {
+      background: var(--deep);
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      padding: 12px 16px;
+      text-align: left;
+    }
+    td {
+      padding: 11px 16px;
+      border-bottom: 1px solid #e4d0b0;
+    }
+    tr:nth-child(even) td { background: #fdf4e3; }
+    tr:hover td { background: #fff3d6; }
+
+    /* ── EXERCISES ────────────────────────────────────────── */
+    .exercises-grid {
+      display: grid;
+      gap: 28px;
+      margin-top: 16px;
+    }
+    .exercise-card {
+      background: var(--ivory);
+      border-radius: 16px;
+      border: 2px solid var(--stone);
+      box-shadow: 0 4px 20px var(--shadow);
+      overflow: hidden;
+      transition: box-shadow .25s, transform .25s;
+    }
+    .exercise-card:hover {
+      box-shadow: 0 8px 32px rgba(200,146,42,0.25);
+      transform: translateY(-2px);
+    }
+    .ex-header {
+      background: linear-gradient(90deg, var(--rust), var(--ochre));
+      color: #fff;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .ex-num {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      opacity: 0.85;
+    }
+    .ex-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+    }
+    .ex-diff {
+      margin-left: auto;
+      font-size: 0.75rem;
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 3px 10px;
+    }
+    .ex-body {
+      padding: 20px 24px;
+    }
+    .ex-body p { margin-bottom: 12px; }
+    .ex-steps {
+      background: #f7f0e4;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 14px 0;
+    }
+    .ex-steps h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      color: var(--rust);
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .ex-steps ol {
+      padding-left: 20px;
+    }
+    .ex-steps li { margin-bottom: 8px; }
+
+    /* answer toggle */
+    .answer-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      background: var(--deep);
+      color: var(--gold);
+      border: none;
+      border-radius: 30px;
+      padding: 9px 22px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+    .answer-btn:hover { background: var(--rust); transform: scale(1.03); }
+    .answer-panel {
+      display: none;
+      background: linear-gradient(135deg, #0f2019, #1a3a2a);
+      color: #c8f0dc;
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin-top: 14px;
+      font-size: 0.97rem;
+      line-height: 1.7;
+    }
+    .answer-panel.open { display: block; }
+    .answer-panel strong { color: #8fe8ba; }
+    .answer-panel .res {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      color: #b9fcd8;
+      display: block;
+      margin-top: 8px;
+    }
+
+    /* ── GLOSSARY ─────────────────────────────────────────── */
+    .glossary-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .glossary-item {
+      background: #fff8ec;
+      border-radius: 10px;
+      padding: 14px 18px;
+      border-left: 4px solid var(--ochre);
+    }
+    .glossary-item dt {
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--rust);
+      margin-bottom: 4px;
+    }
+    .glossary-item dd { font-size: 0.9rem; }
+
+    /* ── FOOTER ───────────────────────────────────────────── */
+    footer {
+      background: var(--deep);
+      color: var(--stone);
+      text-align: center;
+      padding: 36px 20px;
+      font-size: 0.85rem;
+      font-style: italic;
+    }
+    footer .gold { color: var(--gold); font-family: 'Cinzel', serif; font-style: normal; }
+
+    /* ── PROGRESS BAR ─────────────────────────────────────── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--ochre), var(--gold));
+      z-index: 200;
+      width: 0%;
+      transition: width .1s;
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────────── */
+    @media (max-width: 600px) {
+      nav.toc { gap: 6px 12px; }
+      .ex-header { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- HERO -->
+<header class="hero">
+  <svg class="hero-pyramid" width="160" height="120" viewBox="0 0 160 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- piramide stilizzata -->
+    <polygon points="80,6 156,114 4,114" fill="#c8922a" opacity="0.9"/>
+    <polygon points="80,6 156,114 80,114" fill="#8b5e1a" opacity="0.7"/>
+    <line x1="80" y1="6" x2="80" y2="114" stroke="#e8b84b" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.7"/>
+    <line x1="80" y1="6" x2="4" y2="114"  stroke="#f5e6c8" stroke-width="1.5" opacity="0.5"/>
+    <line x1="80" y1="6" x2="156" y2="114" stroke="#f5e6c8" stroke-width="1.5" opacity="0.5"/>
+    <line x1="4" y1="114" x2="156" y2="114" stroke="#f5e6c8" stroke-width="1.5" opacity="0.5"/>
+    <!-- apice highlight -->
+    <circle cx="80" cy="6" r="4" fill="#e8b84b"/>
+    <!-- quota h -->
+    <text x="88" y="66" font-size="13" fill="#e8b84b" font-family="Georgia,serif" font-style="italic">h</text>
+    <!-- apotema a -->
+    <text x="112" y="72" font-size="11" fill="#d4b896" font-family="Georgia,serif" font-style="italic">a</text>
+  </svg>
+  <h1>La Piramide</h1>
+  <p class="subtitle">Manuale completo di geometria solida per la Scuola Secondaria di I grado</p>
+</header>
+
+<!-- NAV -->
+<nav class="toc" aria-label="Indice del manuale">
+  <a href="#definizione">Definizione</a>
+  <a href="#elementi">Elementi</a>
+  <a href="#classificazione">Classificazione</a>
+  <a href="#formule">Formule</a>
+  <a href="#sezioni">Sezioni</a>
+  <a href="#piramide-retta">Piramide retta</a>
+  <a href="#esercizi">Esercizi</a>
+  <a href="#glossario">Glossario</a>
+</nav>
+
+<main class="content">
+
+  <!-- ─── 1. DEFINIZIONE ─── -->
+  <section class="section" id="definizione">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>Che cos'è una piramide?</h2>
+    </div>
+
+    <div class="box box-def">
+      <strong>Definizione:</strong> Una <em>piramide</em> è un solido geometrico che ha come base un poligono e come facce laterali tanti <strong>triangoli</strong> quanti sono i lati della base. Tutti questi triangoli hanno un vertice in comune, detto <strong>apice</strong> (o vertice della piramide).
+    </div>
+
+    <p>Immagina di prendere un foglio di carta quadrato e di "sollevare" il suo centro verso l'alto fino a un punto: ottieni proprio una piramide a base quadrata, come quelle famose di Giza in Egitto.</p>
+
+    <div class="diagram-wrap">
+      <!-- Diagramma SVG piramide etichettata -->
+      <svg width="460" height="300" viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg" font-family="Georgia,serif">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#c8922a"/>
+          </marker>
+        </defs>
+        <!-- base trapezoidale prospettica -->
+        <polygon points="160,230 300,230 350,195 110,195" fill="#f5e6c8" stroke="#8b3a00" stroke-width="1.8"/>
+        <!-- facce -->
+        <polygon points="230,60 160,230 300,230" fill="#c8922a" stroke="#8b3a00" stroke-width="1.5" opacity=".85"/>
+        <polygon points="230,60 300,230 350,195" fill="#a07020" stroke="#8b3a00" stroke-width="1.5" opacity=".75"/>
+        <polygon points="230,60 110,195 160,230" fill="#d4a050" stroke="#8b3a00" stroke-width="1.5" opacity=".6"/>
+        <polygon points="230,60 110,195 350,195" fill="#b07830" stroke="#8b3a00" stroke-width="1.5" opacity=".3"/>
+        <!-- linee tratteggiate -->
+        <line x1="230" y1="60"  x2="230" y2="215" stroke="#e8b84b" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <line x1="160" y1="230" x2="350" y2="195" stroke="#8b3a00" stroke-width="1" stroke-dasharray="5 4" opacity=".5"/>
+        <!-- etichette -->
+        <text x="233" y="52"  font-size="14" fill="#1a0f00" font-weight="bold">V (apice)</text>
+        <text x="152" y="248" font-size="13" fill="#1a0f00">A</text>
+        <text x="296" y="248" font-size="13" fill="#1a0f00">B</text>
+        <text x="354" y="193" font-size="13" fill="#1a0f00">C</text>
+        <text x="99"  y="193" font-size="13" fill="#1a0f00">D</text>
+        <!-- quota h -->
+        <line x1="225" y1="60" x2="225" y2="215" stroke="#3d7a5e" stroke-width="1.5" marker-end="url(#arr)"/>
+        <text x="205" y="140" font-size="14" fill="#3d7a5e" font-style="italic">h</text>
+        <!-- apotema -->
+        <line x1="230" y1="60" x2="230" y2="230" stroke="none"/>
+        <text x="310" y="155" font-size="12" fill="#a07020" font-style="italic">apotema</text>
+        <line x1="230" y1="60" x2="300" y2="230" stroke="#a07020" stroke-width="1.5" stroke-dasharray="4 3" opacity=".7"/>
+        <!-- base label -->
+        <text x="195" y="215" font-size="12" fill="#6b3a00" font-style="italic">BASE</text>
+      </svg>
+      <p class="diagram-caption">Fig. 1 — Piramide retta a base quadrangolare con le principali etichette</p>
+    </div>
+  </section>
+
+  <!-- ─── 2. ELEMENTI ─── -->
+  <section class="section" id="elementi">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>Gli elementi della piramide</h2>
+    </div>
+
+    <p>Ogni piramide è composta da più parti. Impariamo a riconoscerle e a chiamarle con il nome corretto.</p>
+
+    <table>
+      <thead>
+        <tr><th>Elemento</th><th>Che cos'è</th><th>Simbolo</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Base</strong></td><td>Il poligono che "appoggia" a terra</td><td>—</td></tr>
+        <tr><td><strong>Apice (Vertice)</strong></td><td>Il punto più in alto, dove convergono tutte le facce laterali</td><td>V</td></tr>
+        <tr><td><strong>Facce laterali</strong></td><td>I triangoli che collegano la base all'apice</td><td>—</td></tr>
+        <tr><td><strong>Spigoli di base</strong></td><td>I lati del poligono di base</td><td><em>l</em></td></tr>
+        <tr><td><strong>Spigoli laterali</strong></td><td>I segmenti che uniscono un vertice della base all'apice</td><td>—</td></tr>
+        <tr><td><strong>Altezza</strong></td><td>La distanza perpendicolare dall'apice al piano della base</td><td><em>h</em></td></tr>
+        <tr><td><strong>Apotema laterale</strong></td><td>L'altezza di una faccia triangolare (perp. alla base dall'apice della faccia)</td><td><em>a</em></td></tr>
+        <tr><td><strong>Apotema di base</strong></td><td>Il raggio del cerchio inscritto nella base (solo nella piramide retta regolare)</td><td><em>a<sub>b</sub></em></td></tr>
+      </tbody>
+    </table>
+
+    <div class="box box-tip">
+      <strong>💡 Attenzione:</strong> L'<em>apotema laterale</em> e l'<em>altezza</em> non sono la stessa cosa! L'altezza è perpendicolare alla base; l'apotema è il segmento che dal piede della mediana di una faccia arriva all'apice.
+    </div>
+  </section>
+
+  <!-- ─── 3. CLASSIFICAZIONE ─── -->
+  <section class="section" id="classificazione">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>Come si classificano le piramidi</h2>
+    </div>
+
+    <h3>In base alla forma della base</h3>
+    <table>
+      <thead>
+        <tr><th>Nome</th><th>Tipo di base</th><th>N° facce laterali</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Tetraedro</td><td>Triangolo</td><td>3</td></tr>
+        <tr><td>Piramide quadrangolare</td><td>Quadrilatero</td><td>4</td></tr>
+        <tr><td>Piramide pentagonale</td><td>Pentagono</td><td>5</td></tr>
+        <tr><td>Piramide esagonale</td><td>Esagono</td><td>6</td></tr>
+        <tr><td>Piramide <em>n</em>-gonale</td><td>Poligono con <em>n</em> lati</td><td><em>n</em></td></tr>
+      </tbody>
+    </table>
+
+    <h3>In base alla posizione dell'apice</h3>
+    <div class="box box-def">
+      <p><strong>Piramide retta:</strong> l'apice si trova esattamente sopra il centro della base (il suo piede coincide con il centro del poligono di base). È la piramide "simmetrica".</p>
+      <p style="margin-bottom:0"><strong>Piramide obliqua:</strong> l'apice non è sopra il centro della base. Le facce laterali sono triangoli di dimensioni diverse.</p>
+    </div>
+
+    <h3>Piramide regolare</h3>
+    <p>Una piramide è <strong>regolare</strong> quando:</p>
+    <ul style="padding-left:24px; margin-bottom:14px">
+      <li>è <em>retta</em></li>
+      <li>la base è un <em>poligono regolare</em> (tutti i lati e angoli uguali)</li>
+    </ul>
+    <p>In questo caso tutte le facce laterali sono <strong>triangoli isosceli uguali</strong> e tutte le apoteme laterali hanno la stessa lunghezza.</p>
+  </section>
+
+  <!-- ─── 4. FORMULE ─── -->
+  <section class="section" id="formule">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2>Le formule fondamentali</h2>
+    </div>
+
+    <div class="box box-formula">
+      <h3>📐 Area della base (A<sub>b</sub>)</h3>
+      <p>Si calcola con la formula del poligono che forma la base.</p>
+      <span class="formula">A<sub>b</sub> = area del poligono di base</span>
+
+      <h3 style="margin-top:20px">📐 Area laterale (A<sub>l</sub>)</h3>
+      <p>È la somma delle aree di tutte le facce triangolari. Per la piramide regolare:</p>
+      <span class="formula">A<sub>l</sub> = (Perimetro della base × apotema laterale) ÷ 2</span>
+      <p style="margin-top:10px; font-size:.93rem; color:#a8d8be">con <em>P<sub>b</sub></em> = perimetro della base e <em>a</em> = apotema laterale</p>
+
+      <h3 style="margin-top:20px">📐 Area totale (A<sub>tot</sub>)</h3>
+      <span class="formula">A<sub>tot</sub> = A<sub>b</sub> + A<sub>l</sub></span>
+
+      <h3 style="margin-top:20px">📐 Volume (V)</h3>
+      <p>Uguale per ogni tipo di piramide (retta, obliqua, regolare o no):</p>
+      <span class="formula">V = (A<sub>b</sub> × h) ÷ 3</span>
+      <p style="margin-top:10px; font-size:.93rem; color:#a8d8be">Il volume della piramide è <strong>un terzo</strong> del prisma con stessa base e stessa altezza.</p>
+    </div>
+
+    <div class="box box-remember">
+      <strong>🗝️ Trucco per ricordare il volume:</strong><br>
+      "Un terzo di base per altezza" — pensa che ci vogliono <strong>3 piramidi uguali</strong> per riempire un prisma della stessa base e altezza. Puoi dimostrarlo versando acqua!
+    </div>
+
+    <h3>Relazione tra altezza, apotema laterale e apotema di base</h3>
+    <p>Nella piramide retta regolare valgono le relazioni del <strong>teorema di Pitagora</strong>:</p>
+    <div class="box box-formula" style="background: linear-gradient(135deg,#1a1a3a,#0f0f25)">
+      <span class="formula" style="color:#c8d8ff">a² = h² + a<sub>b</sub>²</span>
+      <p style="color:#a0b0d8; margin-top:8px; font-size:.93rem">dove <em>a</em> = apotema laterale, <em>h</em> = altezza, <em>a<sub>b</sub></em> = apotema della base</p>
+      <br>
+      <span class="formula" style="color:#c8d8ff">s² = h² + d²</span>
+      <p style="color:#a0b0d8; margin-top:8px; font-size:.93rem">dove <em>s</em> = spigolo laterale, <em>d</em> = distanza dall'apice di base al centro (metà diagonale o raggio del cerchio circoscritto alla base)</p>
+    </div>
+
+    <div class="diagram-wrap">
+      <svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" font-family="Georgia,serif">
+        <!-- triangolo rettangolo pitagora -->
+        <polygon points="60,170 60,30 200,170" fill="#f5e6c8" stroke="#c8922a" stroke-width="2"/>
+        <!-- angolo retto -->
+        <rect x="60" y="150" width="18" height="18" fill="none" stroke="#c8922a" stroke-width="1.5"/>
+        <!-- etichette -->
+        <text x="30" y="105" font-size="14" fill="#3d7a5e" font-style="italic">h</text>
+        <text x="125" y="195" font-size="14" fill="#8b3a00" font-style="italic">a<tspan baseline-shift="sub" font-size="10">b</tspan></text>
+        <text x="120" y="90"  font-size="14" fill="#c8922a" font-style="italic">a</text>
+        <text x="240" y="100" font-size="13" fill="#1a0f00">a² = h² + a<tspan baseline-shift="sub" font-size="10">b</tspan>²</text>
+        <text x="240" y="130" font-size="12" fill="#3d7a5e">(Teorema di Pitagora)</text>
+      </svg>
+      <p class="diagram-caption">Fig. 2 — Triangolo rettangolo formato da apotema laterale, altezza e apotema di base</p>
+    </div>
+  </section>
+
+  <!-- ─── 5. SEZIONI ─── -->
+  <section class="section" id="sezioni">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2>Sezioni della piramide</h2>
+    </div>
+
+    <h3>Sezione parallela alla base</h3>
+    <p>Se "tagliamo" una piramide con un piano parallelo alla base, la sezione ottenuta è un poligono <strong>simile</strong> alla base. Le sue misure sono proporzionali alla distanza dall'apice.</p>
+
+    <div class="box box-def">
+      <strong>Piramide tronca (o tronco di piramide):</strong> È la parte di piramide compresa tra la base e un piano di taglio parallelo alla base. Ha <em>due basi</em> (grande e piccola) e facce laterali trapezoidali.
+    </div>
+
+    <h3>Sezione passante per l'apice</h3>
+    <p>Un piano che passa per l'apice e per uno spigolo della base produce un triangolo.</p>
+  </section>
+
+  <!-- ─── 6. PIRAMIDE RETTA QUADRANGOLARE ─── -->
+  <section class="section" id="piramide-retta">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2>La piramide retta a base quadrata — caso pratico</h2>
+    </div>
+
+    <p>È il tipo più comune e il modello delle piramidi egizie. La base è un quadrato di lato <em>l</em>.</p>
+
+    <table>
+      <thead><tr><th>Grandezza</th><th>Formula</th></tr></thead>
+      <tbody>
+        <tr><td>Area della base</td><td>A<sub>b</sub> = l²</td></tr>
+        <tr><td>Perimetro della base</td><td>P<sub>b</sub> = 4l</td></tr>
+        <tr><td>Apotema di base</td><td>a<sub>b</sub> = l ÷ 2</td></tr>
+        <tr><td>Apotema laterale</td><td>a = √(h² + (l/2)²)</td></tr>
+        <tr><td>Spigolo laterale</td><td>s = √(h² + (l√2/2)²)</td></tr>
+        <tr><td>Area laterale</td><td>A<sub>l</sub> = (4l × a) ÷ 2 = 2la</td></tr>
+        <tr><td>Area totale</td><td>A<sub>tot</sub> = l² + 2la</td></tr>
+        <tr><td>Volume</td><td>V = (l² × h) ÷ 3</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box box-tip">
+      <strong>🏛️ Curiosità:</strong> La Grande Piramide di Cheope a Giza ha una base quadrata di circa 230 m di lato e un'altezza originaria di 146,5 m. Usando la formula <em>V = l² × h ÷ 3</em> si ottiene un volume di circa <strong>2,6 milioni di m³</strong>!
+    </div>
+  </section>
+
+  <!-- ─── 7. ESERCIZI ─── -->
+  <section class="section" id="esercizi">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2>Esercizi guidati</h2>
+    </div>
+
+    <p>Per ogni esercizio trovi il <strong>testo</strong>, una <strong>guida passo per passo</strong> e, cliccando il pulsante, il <strong>risultato commentato</strong>. Prova prima da solo!</p>
+
+    <div class="exercises-grid">
+
+      <!-- EX 1 -->
+      <div class="exercise-card">
+        <div class="ex-header">
+          <span class="ex-num">01</span>
+          <span class="ex-title">Volume — piramide a base quadrata</span>
+          <span class="ex-diff">⭐ Facile</span>
+        </div>
+        <div class="ex-body">
+          <p>Una piramide retta ha la base quadrata con lato <strong>l = 6 cm</strong> e altezza <strong>h = 8 cm</strong>. Calcola il <strong>volume</strong>.</p>
+          <div class="ex-steps">
+            <h4>GUIDA</h4>
+            <ol>
+              <li>Calcola l'area della base: A<sub>b</sub> = l²</li>
+              <li>Applica la formula del volume: V = (A<sub>b</sub> × h) ÷ 3</li>
+            </ol>
+          </div>
+          <button class="answer-btn" onclick="toggle(this)">▶ Mostra soluzione</button>
+          <div class="answer-panel">
+            <strong>Soluzione passo per passo:</strong><br>
+            A<sub>b</sub> = 6² = <strong>36 cm²</strong><br>
+            V = (36 × 8) ÷ 3 = 288 ÷ 3
+            <span class="res">✔ V = 96 cm³</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EX 2 -->
+      <div class="exercise-card">
+        <div class="ex-header">
+          <span class="ex-num">02</span>
+          <span class="ex-title">Area laterale — piramide quadrangolare regolare</span>
+          <span class="ex-diff">⭐ Facile</span>
+        </div>
+        <div class="ex-body">
+          <p>Una piramide retta regolare ha base quadrata con lato <strong>l = 10 cm</strong> e apotema laterale <strong>a = 13 cm</strong>. Calcola l'<strong>area laterale</strong> e l'<strong>area totale</strong>.</p>
+          <div class="ex-steps">
+            <h4>GUIDA</h4>
+            <ol>
+              <li>Calcola il perimetro della base: P<sub>b</sub> = 4 × l</li>
+              <li>A<sub>l</sub> = (P<sub>b</sub> × a) ÷ 2</li>
+              <li>A<sub>b</sub> = l²</li>
+              <li>A<sub>tot</sub> = A<sub>b</sub> + A<sub>l</sub></li>
+            </ol>
+          </div>
+          <button class="answer-btn" onclick="toggle(this)">▶ Mostra soluzione</button>
+          <div class="answer-panel">
+            P<sub>b</sub> = 4 × 10 = <strong>40 cm</strong><br>
+            A<sub>l</sub> = (40 × 13) ÷ 2 = 520 ÷ 2 = <strong>260 cm²</strong><br>
+            A<sub>b</sub> = 10² = <strong>100 cm²</strong><br>
+            A<sub>tot</sub> = 100 + 260
+            <span class="res">✔ A<sub>l</sub> = 260 cm² | A<sub>tot</sub> = 360 cm²</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EX 3 -->
+      <div class="exercise-card">
+        <div class="ex-header">
+          <span class="ex-num">03</span>
+          <span class="ex-title">Trovare l'apotema con Pitagora</span>
+          <span class="ex-diff">⭐⭐ Medio</span>
+        </div>
+        <div class="ex-body">
+          <p>Una piramide retta a base quadrata ha lato <strong>l = 12 cm</strong> e altezza <strong>h = 8 cm</strong>. Calcola l'<strong>apotema laterale</strong>.</p>
+          <div class="ex-steps">
+            <h4>GUIDA</h4>
+            <ol>
+              <li>Calcola l'apotema di base: a<sub>b</sub> = l ÷ 2</li>
+              <li>Usa Pitagora: a² = h² + a<sub>b</sub>²</li>
+              <li>Ricava <em>a</em> estraendo la radice quadrata</li>
+            </ol>
+          </div>
+          <button class="answer-btn" onclick="toggle(this)">▶ Mostra soluzione</button>
+          <div class="answer-panel">
+            a<sub>b</sub> = 12 ÷ 2 = <strong>6 cm</strong><br>
+            a² = 8² + 6² = 64 + 36 = 100<br>
+            a = √100
+            <span class="res">✔ a = 10 cm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EX 4 -->
+      <div class="exercise-card">
+        <div class="ex-header">
+          <span class="ex-num">04</span>
+          <span class="ex-title">Tutto insieme — piramide retta regolare</span>
+          <span class="ex-diff">⭐⭐ Medio</span>
+        </div>
+        <div class="ex-body">
+          <p>Una piramide retta regolare ha base quadrata con lato <strong>l = 6 cm</strong> e altezza <strong>h = 4 cm</strong>. Calcola: apotema laterale, area totale e volume.</p>
+          <div class="ex-steps">
+            <h4>GUIDA</h4>
+            <ol>
+              <li>a<sub>b</sub> = l ÷ 2 → poi Pitagora per trovare <em>a</em></li>
+              <li>A<sub>l</sub> = (P<sub>b</sub> × a) ÷ 2</li>
+              <li>A<sub>tot</sub> = A<sub>b</sub> + A<sub>l</sub></li>
+              <li>V = (A<sub>b</sub> × h) ÷ 3</li>
+            </ol>
+          </div>
+          <button class="answer-btn" onclick="toggle(this)">▶ Mostra soluzione</button>
+          <div class="answer-panel">
+            a<sub>b</sub> = 3 cm → a = √(16+9) = √25 = <strong>5 cm</strong><br>
+            P<sub>b</sub> = 24 cm → A<sub>l</sub> = (24×5)÷2 = <strong>60 cm²</strong><br>
+            A<sub>b</sub> = 36 cm² → A<sub>tot</sub> = 36 + 60 = <strong>96 cm²</strong><br>
+            V = (36 × 4) ÷ 3 = 144 ÷ 3
+            <span class="res">✔ a=5 cm | A<sub>tot</sub>=96 cm² | V=48 cm³</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EX 5 -->
+      <div class="exercise-card">
+        <div class="ex-header">
+          <span class="ex-num">05</span>
+          <span class="ex-title">Ricavare l'altezza dal volume</span>
+          <span class="ex-diff">⭐⭐ Medio</span>
+        </div>
+        <div class="ex-body">
+          <p>Una piramide a base quadrata con lato <strong>l = 9 cm</strong> ha volume <strong>V = 243 cm³</strong>. Qual è la sua <strong>altezza</strong>?</p>
+          <div class="ex-steps">
+            <h4>GUIDA</h4>
+            <ol>
+              <li>Calcola A<sub>b</sub> = l²</li>
+              <li>Dalla formula V = (A<sub>b</sub> × h) ÷ 3 ricava h: h = (3 × V) ÷ A<sub>b</sub></li>
+            </ol>
+          </div>
+          <button class="answer-btn" onclick="toggle(this)">▶ Mostra soluzione</button>
+          <div class="answer-panel">
+            A<sub>b</sub> = 9² = <strong>81 cm²</strong><br>
+            h = (3 × 243) ÷ 81 = 729 ÷ 81
+            <span class="res">✔ h = 9 cm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EX 6 -->
+      <div class="exercise-card">
+        <div class="ex-header">
+          <span class="ex-num">06</span>
+          <span class="ex-title">Piramide triangolare (tetraedro)</span>
+          <span class="ex-diff">⭐⭐ Medio</span>
+        </div>
+        <div class="ex-body">
+          <p>Un tetraedro ha come base un triangolo equilatero di lato <strong>l = 6 cm</strong> (area base ≈ 15,59 cm²) e altezza <strong>h = 5 cm</strong>. Calcola il <strong>volume</strong>.</p>
+          <div class="ex-steps">
+            <h4>GUIDA</h4>
+            <ol>
+              <li>L'area del triangolo equilatero è già data: A<sub>b</sub> ≈ 15,59 cm²</li>
+              <li>Applica V = (A<sub>b</sub> × h) ÷ 3</li>
+            </ol>
+          </div>
+          <button class="answer-btn" onclick="toggle(this)">▶ Mostra soluzione</button>
+          <div class="answer-panel">
+            V = (15,59 × 5) ÷ 3 = 77,95 ÷ 3
+            <span class="res">✔ V ≈ 25,98 cm³</span>
+            <br><small style="color:#8fe8ba">Nota: A<sub>b</sub> = (l² × √3) ÷ 4 = (36 × 1,732) ÷ 4 ≈ 15,59 cm²</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- EX 7 -->
+      <div class="exercise-card">
+        <div class="ex-header">
+          <span class="ex-num">07</span>
+          <span class="ex-title">Problema reale — scatola piramidale</span>
+          <span class="ex-diff">⭐⭐ Medio</span>
+        </div>
+        <div class="ex-body">
+          <p>Un packaging a forma di piramide a base quadrata ha lato <strong>l = 8 cm</strong> e altezza <strong>h = 12 cm</strong>. Quanti cm³ di prodotto può contenere? Quanta carta serve per rivestire solo le <strong>4 facce laterali</strong> se l'apotema laterale è <strong>a = 12,65 cm</strong>?</p>
+          <div class="ex-steps">
+            <h4>GUIDA</h4>
+            <ol>
+              <li>Volume = (l² × h) ÷ 3</li>
+              <li>A<sub>l</sub> = (4l × a) ÷ 2</li>
+            </ol>
+          </div>
+          <button class="answer-btn" onclick="toggle(this)">▶ Mostra soluzione</button>
+          <div class="answer-panel">
+            V = (64 × 12) ÷ 3 = 768 ÷ 3 = <strong>256 cm³</strong><br>
+            A<sub>l</sub> = (4×8×12,65) ÷ 2 = 404,8 ÷ 2
+            <span class="res">✔ V=256 cm³ | A<sub>l</sub>≈202,4 cm²</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EX 8 -->
+      <div class="exercise-card">
+        <div class="ex-header">
+          <span class="ex-num">08</span>
+          <span class="ex-title">Confronto piramide–prisma</span>
+          <span class="ex-diff">⭐⭐⭐ Difficile</span>
+        </div>
+        <div class="ex-body">
+          <p>Un prisma rettangolare e una piramide hanno la stessa base quadrata con lato <strong>6 cm</strong> e la stessa altezza <strong>9 cm</strong>. Di quante volte il volume del prisma è maggiore di quello della piramide?</p>
+          <div class="ex-steps">
+            <h4>GUIDA</h4>
+            <ol>
+              <li>V<sub>prisma</sub> = A<sub>b</sub> × h</li>
+              <li>V<sub>piramide</sub> = (A<sub>b</sub> × h) ÷ 3</li>
+              <li>Calcola il rapporto V<sub>prisma</sub> ÷ V<sub>piramide</sub></li>
+            </ol>
+          </div>
+          <button class="answer-btn" onclick="toggle(this)">▶ Mostra soluzione</button>
+          <div class="answer-panel">
+            A<sub>b</sub> = 36 cm²<br>
+            V<sub>prisma</sub> = 36 × 9 = <strong>324 cm³</strong><br>
+            V<sub>piramide</sub> = 324 ÷ 3 = <strong>108 cm³</strong><br>
+            Rapporto = 324 ÷ 108
+            <span class="res">✔ Il prisma è esattamente 3 volte più grande!</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EX 9 -->
+      <div class="exercise-card">
+        <div class="ex-header">
+          <span class="ex-num">09</span>
+          <span class="ex-title">Spigolo laterale con Pitagora</span>
+          <span class="ex-diff">⭐⭐⭐ Difficile</span>
+        </div>
+        <div class="ex-body">
+          <p>Una piramide retta a base quadrata ha lato <strong>l = 10 cm</strong> e altezza <strong>h = 12 cm</strong>. Calcola lo <strong>spigolo laterale</strong> <em>s</em>.</p>
+          <div class="ex-steps">
+            <h4>GUIDA</h4>
+            <ol>
+              <li>La distanza dal centro della base a un vertice è: d = (l × √2) ÷ 2 (metà diagonale del quadrato)</li>
+              <li>Ricorda che la diagonale del quadrato è l × √2</li>
+              <li>Applica Pitagora: s² = h² + d²</li>
+              <li>√2 ≈ 1,414</li>
+            </ol>
+          </div>
+          <button class="answer-btn" onclick="toggle(this)">▶ Mostra soluzione</button>
+          <div class="answer-panel">
+            Diagonale base = 10 × 1,414 ≈ 14,14 cm<br>
+            d = 14,14 ÷ 2 ≈ <strong>7,07 cm</strong><br>
+            s² = 12² + 7,07² = 144 + 49,98 ≈ 193,98<br>
+            s = √193,98
+            <span class="res">✔ s ≈ 13,93 cm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EX 10 -->
+      <div class="exercise-card">
+        <div class="ex-header">
+          <span class="ex-num">10</span>
+          <span class="ex-title">Problema inverso — trova il lato dalla superficie totale</span>
+          <span class="ex-diff">⭐⭐⭐ Difficile</span>
+        </div>
+        <div class="ex-body">
+          <p>Una piramide retta regolare a base quadrata ha area totale <strong>A<sub>tot</sub> = 288 cm²</strong> e apotema laterale <strong>a = 10 cm</strong>. Trova il <strong>lato della base</strong>.</p>
+          <div class="ex-steps">
+            <h4>GUIDA</h4>
+            <ol>
+              <li>Scrivi A<sub>tot</sub> = A<sub>b</sub> + A<sub>l</sub> = l² + (4l × a) ÷ 2 = l² + 2la</li>
+              <li>Sostituisci i valori noti: 288 = l² + 2 × l × 10 = l² + 20l</li>
+              <li>Risolvi l'equazione: l² + 20l − 288 = 0</li>
+              <li>Prova l = 12: 144 + 240 = 384 ✗ → prova l = 8: 64 + 160 = 224 ✗ → prova l = 9: 81 + 180 = 261 ✗</li>
+              <li>Con la formula quadratica o per tentativi: l = [−20 + √(400 + 1152)] ÷ 2</li>
+            </ol>
+          </div>
+          <button class="answer-btn" onclick="toggle(this)">▶ Mostra soluzione</button>
+          <div class="answer-panel">
+            l² + 20l − 288 = 0<br>
+            Δ = 400 + 4×288 = 400 + 1152 = 1552<br>
+            √1552 ≈ 39,4<br>
+            l = (−20 + 39,4) ÷ 2 = 19,4 ÷ 2 ≈ <strong>9,7 cm</strong><br>
+            <small style="color:#8fe8ba">Verifica: 9,7² + 20×9,7 = 94,09 + 194 ≈ 288 ✔</small>
+            <span class="res">✔ l ≈ 9,7 cm</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /exercises-grid -->
+  </section>
+
+  <!-- ─── 8. GLOSSARIO ─── -->
+  <section class="section" id="glossario">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2>Glossario rapido</h2>
+    </div>
+
+    <dl class="glossary-list">
+      <div class="glossary-item">
+        <dt>Apice</dt>
+        <dd>Il vertice comune a tutte le facce laterali della piramide.</dd>
+      </div>
+      <div class="glossary-item">
+        <dt>Apotema laterale</dt>
+        <dd>L'altezza di una faccia triangolare laterale, misurata dall'apice.</dd>
+      </div>
+      <div class="glossary-item">
+        <dt>Apotema di base</dt>
+        <dd>La distanza dal centro della base al punto medio di un lato della base.</dd>
+      </div>
+      <div class="glossary-item">
+        <dt>Altezza</dt>
+        <dd>La distanza perpendicolare dall'apice al piano della base.</dd>
+      </div>
+      <div class="glossary-item">
+        <dt>Base</dt>
+        <dd>Il poligono su cui "poggia" la piramide.</dd>
+      </div>
+      <div class="glossary-item">
+        <dt>Faccia laterale</dt>
+        <dd>Uno dei triangoli che formano i lati della piramide.</dd>
+      </div>
+      <div class="glossary-item">
+        <dt>Piramide retta</dt>
+        <dd>Piramide il cui apice è sopra il centro della base.</dd>
+      </div>
+      <div class="glossary-item">
+        <dt>Piramide regolare</dt>
+        <dd>Piramide retta con base poligono regolare.</dd>
+      </div>
+      <div class="glossary-item">
+        <dt>Spigolo laterale</dt>
+        <dd>Segmento che unisce un vertice della base con l'apice.</dd>
+      </div>
+      <div class="glossary-item">
+        <dt>Tetraedro</dt>
+        <dd>Piramide con base triangolare (4 facce in totale).</dd>
+      </div>
+      <div class="glossary-item">
+        <dt>Tronco di piramide</dt>
+        <dd>Solido ottenuto tagliando la piramide con un piano parallelo alla base.</dd>
+      </div>
+      <div class="glossary-item">
+        <dt>Volume</dt>
+        <dd>Lo spazio occupato dalla piramide: V = (A<sub>b</sub> × h) ÷ 3.</dd>
+      </div>
+    </dl>
+  </section>
+
+</main>
+
+<footer>
+  <p class="gold">La Piramide — Manuale di Geometria</p>
+  <p>Materiale didattico per la Scuola Secondaria di I grado · Matematica — Geometria Solida</p>
+</footer>
+
+<script>
+  // toggle risposta
+  function toggle(btn) {
+    const panel = btn.nextElementSibling;
+    const isOpen = panel.classList.toggle('open');
+    btn.textContent = isOpen ? '▼ Nascondi soluzione' : '▶ Mostra soluzione';
+  }
+
+  // progress bar di lettura
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrolled = doc.scrollTop;
+    const total = doc.scrollHeight - doc.clientHeight;
+    document.getElementById('progress-bar').style.width = (scrolled / total * 100) + '%';
+  });
+</script>
+</body>
+</html>

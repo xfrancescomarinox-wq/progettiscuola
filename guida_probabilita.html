@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Probabilità e Statistica — Guida Terza Media</title>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --navy-mid: #2d3f6e;
+    --navy-light: #e8ecf5;
+    --gold: #e8a020;
+    --gold-light: #fef3dc;
+    --teal: #1d8a6e;
+    --teal-light: #e0f5ef;
+    --coral: #d84f2a;
+    --coral-light: #faeae4;
+    --purple: #5e40b7;
+    --purple-light: #eeebfb;
+    --cream: #fafaf7;
+    --ink: #1c1c1e;
+    --ink-mid: #4a4a52;
+    --ink-soft: #7a7a85;
+    --border: #e2e2e8;
+    --white: #ffffff;
+    --sidebar-w: 260px;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--navy);
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 2rem;
+  }
+  .sidebar-header {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 0.5rem;
+  }
+  .sidebar-badge {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+  .sidebar-title {
+    font-family: 'Literata', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+  }
+  .nav-section {
+    padding: 0.25rem 0;
+  }
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    padding: 0.75rem 1.25rem 0.2rem;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 1.25rem;
+    color: rgba(255,255,255,0.72);
+    text-decoration: none;
+    font-size: 13.5px;
+    transition: background 0.15s, color 0.15s;
+    border-left: 3px solid transparent;
+  }
+  .nav-link:hover, .nav-link.active {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    border-left-color: var(--gold);
+  }
+  .nav-icon {
+    font-size: 15px;
+    opacity: 0.9;
+    min-width: 18px;
+    text-align: center;
+  }
+
+  /* MAIN */
+  .main {
+    margin-left: var(--sidebar-w);
+    min-height: 100vh;
+    max-width: 820px;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    padding: 3.5rem 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    border: 40px solid rgba(232,160,32,0.12);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: 60px; top: 40px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    border: 25px solid rgba(232,160,32,0.07);
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .hero h1 {
+    font-family: 'Literata', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+  .hero-sub {
+    color: rgba(255,255,255,0.65);
+    font-size: 15px;
+    max-width: 480px;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  .hero-pills {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .pill {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.85);
+    border-radius: 20px;
+    padding: 0.25rem 0.75rem;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  /* SECTIONS */
+  .section {
+    padding: 2.5rem 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+  .section-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+  .section h2 {
+    font-family: 'Literata', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 1rem;
+    line-height: 1.25;
+  }
+  .section h3 {
+    font-family: 'Literata', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--navy-mid);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .section p { margin-bottom: 0.85rem; }
+  .section p:last-child { margin-bottom: 0; }
+
+  /* DEFINITION BOX */
+  .def-box {
+    background: var(--navy-light);
+    border-left: 4px solid var(--navy);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+  }
+  .def-box strong { color: var(--navy); }
+  .def-box.gold { background: var(--gold-light); border-left-color: var(--gold); }
+  .def-box.gold strong { color: #8a5e10; }
+  .def-box.teal { background: var(--teal-light); border-left-color: var(--teal); }
+  .def-box.teal strong { color: var(--teal); }
+  .def-box.coral { background: var(--coral-light); border-left-color: var(--coral); }
+  .def-box.coral strong { color: var(--coral); }
+  .def-box.purple { background: var(--purple-light); border-left-color: var(--purple); }
+  .def-box.purple strong { color: var(--purple); }
+
+  /* EVENT CARDS */
+  .event-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 1.25rem 0;
+  }
+  .event-card {
+    border-radius: var(--radius);
+    padding: 1.1rem;
+    text-align: center;
+  }
+  .event-card.certain { background: var(--teal-light); border: 1.5px solid var(--teal); }
+  .event-card.impossible { background: var(--coral-light); border: 1.5px solid var(--coral); }
+  .event-card.aleatory { background: var(--gold-light); border: 1.5px solid var(--gold); }
+  .event-icon { font-size: 2rem; margin-bottom: 0.4rem; }
+  .event-card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+  .event-card.certain h4 { color: var(--teal); }
+  .event-card.impossible h4 { color: var(--coral); }
+  .event-card.aleatory h4 { color: #8a5e10; }
+  .event-card p { font-size: 13px; color: var(--ink-mid); margin: 0; }
+  .event-card .prob {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Literata', serif;
+  }
+  .event-card.certain .prob { color: var(--teal); }
+  .event-card.impossible .prob { color: var(--coral); }
+  .event-card.aleatory .prob { color: #8a5e10; }
+
+  /* FORMULA */
+  .formula-box {
+    background: var(--navy);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  .formula-box .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 0.75rem;
+  }
+  .formula {
+    font-family: 'Literata', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .formula-legend {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.6);
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.75rem;
+  }
+
+  /* INTERACTIVE DICE */
+  .interactive-panel {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin: 1.25rem 0;
+  }
+  .interactive-panel h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .dice-display {
+    font-size: 5rem;
+    text-align: center;
+    padding: 0.5rem 0;
+    user-select: none;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .dice-display:hover { transform: scale(1.05); }
+  .dice-display:active { transform: scale(0.95); }
+  .btn-primary {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.4rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--navy);
+    border: 1.5px solid var(--navy);
+    border-radius: 8px;
+    padding: 0.55rem 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-secondary:hover { background: var(--navy-light); }
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  .stat-card {
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 0.75rem;
+    text-align: center;
+  }
+  .stat-num { font-size: 1.4rem; font-weight: 700; color: var(--navy); font-family: 'Literata', serif; }
+  .stat-label { font-size: 11px; color: var(--ink-soft); margin-top: 0.1rem; }
+  .freq-bar-wrap { margin-top: 1rem; }
+  .freq-item { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; }
+  .freq-label { font-size: 12px; color: var(--ink-mid); min-width: 20px; font-weight: 600; }
+  .freq-bar-bg { flex: 1; background: var(--border); border-radius: 4px; height: 16px; overflow: hidden; }
+  .freq-bar { background: var(--navy); height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+  .freq-count { font-size: 12px; color: var(--ink-soft); min-width: 30px; text-align: right; }
+
+  /* CARD SIMULATOR */
+  .card-grid-mini {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 0.75rem 0;
+  }
+  .card-chip {
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 0.3rem 0.6rem;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    min-width: 36px;
+    text-align: center;
+  }
+  .card-chip.red-suit { color: #c0392b; }
+  .card-chip.black-suit { color: #1c1c1e; }
+  .card-chip.selected { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .card-chip.selected.red-suit { background: var(--coral); border-color: var(--coral); color: #fff; }
+  .prob-result {
+    background: var(--gold-light);
+    border: 1.5px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 0.9rem 1.2rem;
+    margin-top: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .prob-big { font-size: 1.6rem; font-weight: 700; color: #8a5e10; font-family: 'Literata', serif; }
+  .prob-detail { font-size: 13px; color: #8a5e10; }
+
+  /* EXAMPLE */
+  .example-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin: 1.25rem 0;
+    overflow: hidden;
+  }
+  .example-header {
+    background: var(--navy-light);
+    padding: 0.65rem 1.2rem;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .example-body { padding: 1.1rem 1.2rem; }
+  .step-list { list-style: none; counter-reset: steps; }
+  .step-list li {
+    counter-increment: steps;
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+    align-items: flex-start;
+  }
+  .step-list li::before {
+    content: counter(steps);
+    background: var(--navy);
+    color: #fff;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  /* EXERCISE */
+  .exercise-block {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin: 1rem 0;
+    overflow: hidden;
+  }
+  .exercise-header {
+    background: var(--purple-light);
+    border-bottom: 1px solid #d9d3f5;
+    padding: 0.7rem 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .exercise-header h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--purple);
+  }
+  .ex-badge {
+    font-size: 10px;
+    background: var(--purple);
+    color: #fff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .exercise-body { padding: 1.1rem 1.2rem; }
+  .solution-toggle {
+    display: none;
+  }
+  .solution-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    background: var(--purple-light);
+    border: 1.5px solid var(--purple);
+    color: var(--purple);
+    padding: 0.45rem 1rem;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 0.75rem;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .solution-label:hover { background: #ddd8f8; }
+  .solution-content {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f9f7ff;
+    border-radius: 8px;
+    border: 1px solid #d9d3f5;
+  }
+  .solution-toggle:checked ~ .solution-label { background: var(--purple); color: #fff; }
+  .solution-toggle:checked ~ .solution-label .arrow { transform: rotate(180deg); }
+  .solution-toggle:checked ~ .solution-content { display: block; }
+  .arrow { transition: transform 0.2s; display: inline-block; }
+
+  /* QUIZ */
+  .quiz-q {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+  .quiz-text { font-weight: 500; margin-bottom: 0.85rem; color: var(--navy); }
+  .quiz-options { display: flex; flex-direction: column; gap: 0.4rem; }
+  .quiz-option {
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--cream);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .quiz-option:hover { border-color: var(--navy); background: var(--navy-light); }
+  .quiz-option.correct { background: var(--teal-light); border-color: var(--teal); color: var(--teal); }
+  .quiz-option.wrong { background: var(--coral-light); border-color: var(--coral); color: var(--coral); }
+  .quiz-option .opt-badge {
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 20px;
+    text-align: center;
+  }
+  .quiz-feedback {
+    margin-top: 0.6rem;
+    font-size: 13px;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: var(--teal-light); color: var(--teal); }
+  .quiz-feedback.wrong { background: var(--coral-light); color: var(--coral); }
+  .quiz-score {
+    background: var(--navy);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    text-align: center;
+    margin-top: 1.5rem;
+    display: none;
+  }
+  .quiz-score.show { display: block; }
+  .score-big { font-size: 3rem; font-weight: 700; font-family: 'Literata', serif; color: var(--gold); }
+  .score-sub { color: rgba(255,255,255,0.7); font-size: 14px; margin-top: 0.4rem; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+  th { background: var(--navy); color: #fff; padding: 0.6rem 0.9rem; font-size: 13px; font-weight: 500; text-align: left; }
+  td { padding: 0.55rem 0.9rem; font-size: 13.5px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: var(--cream); }
+
+  /* HIGHLIGHT */
+  .highlight { background: var(--gold-light); border-radius: 3px; padding: 0 3px; }
+  em { font-style: italic; color: var(--ink-mid); }
+
+  /* BACK TO TOP */
+  .back-btn { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; color: var(--navy); font-size: 13px; font-weight: 500; margin-bottom: 1rem; }
+  .back-btn:hover { text-decoration: underline; }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .hero { padding: 2rem 1.5rem; }
+    .section { padding: 2rem 1.5rem; }
+    .event-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-badge">Terza Media · Matematica</div>
+    <div class="sidebar-title">Probabilità e Statistica</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Fondamenti</div>
+    <a href="#intro" class="nav-link"><span class="nav-icon">📖</span> Introduzione</a>
+    <a href="#eventi" class="nav-link"><span class="nav-icon">🎲</span> Tipi di eventi</a>
+    <a href="#classica" class="nav-link"><span class="nav-icon">📐</span> Probabilità classica</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Esempi pratici</div>
+    <a href="#dado" class="nav-link"><span class="nav-icon">🎯</span> Lancio di dadi</a>
+    <a href="#carte" class="nav-link"><span class="nav-icon">🃏</span> Estrazione di carte</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Approfondimento</div>
+    <a href="#compatibili" class="nav-link"><span class="nav-icon">🔗</span> Compatibili e incompatibili</a>
+    <a href="#indipendenti" class="nav-link"><span class="nav-icon">⚡</span> Indipendenti</a>
+    <a href="#composta" class="nav-link"><span class="nav-icon">🔢</span> Probabilità composta</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Pratica</div>
+    <a href="#esercizi" class="nav-link"><span class="nav-icon">✏️</span> Esercizi svolti</a>
+    <a href="#quiz" class="nav-link"><span class="nav-icon">🏆</span> Test di verifica</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-eyebrow">Guida Didattica Completa</div>
+    <h1>Probabilità<br>e Statistica</h1>
+    <p class="hero-sub">Dalla teoria agli esempi pratici, con esercizi guidati e test di verifica. Tutto ciò che ti serve per l'esame di terza media.</p>
+    <div class="hero-pills">
+      <span class="pill">📊 Probabilità classica</span>
+      <span class="pill">🎲 Simulatori interattivi</span>
+      <span class="pill">✏️ Esercizi svolti</span>
+      <span class="pill">🏆 Test finale</span>
+    </div>
+  </header>
+
+  <!-- SEZIONE 1: INTRO -->
+  <section class="section" id="intro">
+    <div class="section-num">Sezione 01</div>
+    <h2>Cos'è la probabilità?</h2>
+    <p>La <strong>probabilità</strong> è una misura numerica che indica quanto è <em>probabile</em> che si verifichi un determinato evento. Viene utilizzata in moltissimi ambiti della vita quotidiana: dalla previsione del tempo alla medicina, dall'economia ai giochi.</p>
+    <div class="def-box gold">
+      <strong>Definizione:</strong> La probabilità è un numero compreso tra 0 e 1 (oppure tra 0% e 100%) che misura la possibilità che un evento si verifichi. Quanto più è vicino a 1, tanto più l'evento è probabile.
+    </div>
+    <h3>Termini fondamentali</h3>
+    <table>
+      <thead><tr><th>Termine</th><th>Significato</th><th>Esempio</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Esperimento</strong></td><td>Un'azione il cui esito è incerto</td><td>Lanciare un dado</td></tr>
+        <tr><td><strong>Spazio campionario (Ω)</strong></td><td>Insieme di tutti i possibili risultati</td><td>Ω = {1, 2, 3, 4, 5, 6}</td></tr>
+        <tr><td><strong>Evento</strong></td><td>Un sottoinsieme dello spazio campionario</td><td>Ottenere un numero pari</td></tr>
+        <tr><td><strong>Caso favorevole</strong></td><td>Un risultato che soddisfa l'evento</td><td>Ottenere 2, 4 o 6</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SEZIONE 2: TIPI DI EVENTI -->
+  <section class="section" id="eventi">
+    <div class="section-num">Sezione 02</div>
+    <h2>Tipi di eventi</h2>
+    <p>In probabilità, gli eventi si classificano in tre categorie fondamentali a seconda della loro certezza di verificarsi.</p>
+    <div class="event-grid">
+      <div class="event-card certain">
+        <div class="event-icon">✅</div>
+        <h4>Evento Certo</h4>
+        <p>Si verificherà sicuramente, qualunque cosa accada.</p>
+        <div class="prob">P = 1</div>
+      </div>
+      <div class="event-card impossible">
+        <div class="event-icon">❌</div>
+        <h4>Evento Impossibile</h4>
+        <p>Non potrà mai verificarsi in nessun caso.</p>
+        <div class="prob">P = 0</div>
+      </div>
+      <div class="event-card aleatory">
+        <div class="event-icon">🎲</div>
+        <h4>Evento Aleatorio</h4>
+        <p>Può verificarsi oppure no: è incerto.</p>
+        <div class="prob">0 &lt; P &lt; 1</div>
+      </div>
+    </div>
+
+    <h3>Esempi chiari</h3>
+    <div class="example-box">
+      <div class="example-header">📌 Esempi con un dado a 6 facce</div>
+      <div class="example-body">
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem;">
+          <li style="display:flex;align-items:flex-start;gap:0.75rem;"><span style="background:#1d8a6e;color:#fff;border-radius:4px;padding:1px 8px;font-size:11px;font-weight:600;margin-top:3px;white-space:nowrap;">CERTO</span> <span>Ottenere un numero compreso tra 1 e 6 → accade sempre</span></li>
+          <li style="display:flex;align-items:flex-start;gap:0.75rem;"><span style="background:#d84f2a;color:#fff;border-radius:4px;padding:1px 8px;font-size:11px;font-weight:600;margin-top:3px;white-space:nowrap;">IMPOSSIBILE</span> <span>Ottenere il numero 7 → il dado ne ha solo 6</span></li>
+          <li style="display:flex;align-items:flex-start;gap:0.75rem;"><span style="background:#e8a020;color:#fff;border-radius:4px;padding:1px 8px;font-size:11px;font-weight:600;margin-top:3px;white-space:nowrap;">ALEATORIO</span> <span>Ottenere il numero 3 → può avvenire o meno</span></li>
+          <li style="display:flex;align-items:flex-start;gap:0.75rem;"><span style="background:#e8a020;color:#fff;border-radius:4px;padding:1px 8px;font-size:11px;font-weight:600;margin-top:3px;white-space:nowrap;">ALEATORIO</span> <span>Ottenere un numero pari → dipende dall'esito</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="def-box teal">
+      <strong>Evento complementare:</strong> L'evento complementare di A (scritto Ā o A') è l'insieme di tutti i risultati che NON appartengono ad A. Vale sempre: P(A) + P(Ā) = 1, quindi P(Ā) = 1 − P(A).
+    </div>
+  </section>
+
+  <!-- SEZIONE 3: PROBABILITÀ CLASSICA -->
+  <section class="section" id="classica">
+    <div class="section-num">Sezione 03</div>
+    <h2>La probabilità classica</h2>
+    <p>La <strong>probabilità classica</strong> (o "a priori") si applica quando tutti i risultati dell'esperimento sono <em>ugualmente possibili</em>, cioè nessun risultato è favorito rispetto agli altri.</p>
+
+    <div class="formula-box">
+      <div class="label">Formula della probabilità classica</div>
+      <div class="formula">P(A) = casi favorevoli / casi totali</div>
+      <div class="formula-legend">
+        <span>P(A) = probabilità dell'evento A</span>
+        <span>casi favorevoli = risultati che soddisfano A</span>
+        <span>casi totali = tutti i risultati possibili</span>
+      </div>
+    </div>
+
+    <h3>Come applicare la formula</h3>
+    <div class="example-box">
+      <div class="example-header">📌 Esempio guidato — Dado a 6 facce</div>
+      <div class="example-body">
+        <p><strong>Domanda:</strong> Qual è la probabilità di ottenere un numero pari lanciando un dado?</p>
+        <ol class="step-list">
+          <li>Identifico lo spazio campionario: Ω = {1, 2, 3, 4, 5, 6} → <strong>6 casi totali</strong></li>
+          <li>Individuo i casi favorevoli (numeri pari): {2, 4, 6} → <strong>3 casi favorevoli</strong></li>
+          <li>Applico la formula: P(pari) = 3/6 = <strong>1/2 = 0,5 = 50%</strong></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="def-box">
+      <strong>Nota bene:</strong> La probabilità può essere espressa in tre modi equivalenti: come <em>frazione</em> (3/6), come <em>numero decimale</em> (0,5) o come <em>percentuale</em> (50%). Tutte e tre le forme sono corrette!
+    </div>
+  </section>
+
+  <!-- SEZIONE 4: DADO INTERATTIVO -->
+  <section class="section" id="dado">
+    <div class="section-num">Sezione 04</div>
+    <h2>Simulatore — Lancio di dadi</h2>
+    <p>Sperimenta direttamente la probabilità con il simulatore interattivo. Osserva come i risultati si avvicinano alle probabilità teoriche con il crescere dei lanci.</p>
+
+    <div class="interactive-panel">
+      <h4>🎲 Simulatore dado a 6 facce</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;">
+        <div>
+          <div class="dice-display" id="diceEmoji" onclick="rollDice()" title="Clicca per lanciare">⬜</div>
+          <div style="text-align:center;margin-bottom:0.75rem;">
+            <div id="diceResult" style="font-size:1rem;font-weight:600;color:var(--navy);margin-bottom:0.5rem;">Clicca il dado o il pulsante!</div>
+          </div>
+          <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;">
+            <button class="btn-primary" onclick="rollDice()">🎲 Lancia</button>
+            <button class="btn-primary" onclick="rollMany(100)" style="background:var(--teal);">🔄 ×100</button>
+            <button class="btn-secondary" onclick="resetDice()">Reset</button>
+          </div>
+        </div>
+        <div>
+          <div class="stats-row">
+            <div class="stat-card"><div class="stat-num" id="totalRolls">0</div><div class="stat-label">Lanci totali</div></div>
+            <div class="stat-card"><div class="stat-num" id="lastRoll">—</div><div class="stat-label">Ultimo valore</div></div>
+            <div class="stat-card"><div class="stat-num" id="evenCount">0</div><div class="stat-label">Risultati pari</div></div>
+          </div>
+          <div class="freq-bar-wrap" id="freqBars">
+            <div class="freq-item" id="bar1"><div class="freq-label">1</div><div class="freq-bar-bg"><div class="freq-bar" style="width:0%"></div></div><div class="freq-count">0</div></div>
+            <div class="freq-item" id="bar2"><div class="freq-label">2</div><div class="freq-bar-bg"><div class="freq-bar" style="width:0%"></div></div><div class="freq-count">0</div></div>
+            <div class="freq-item" id="bar3"><div class="freq-label">3</div><div class="freq-bar-bg"><div class="freq-bar" style="width:0%"></div></div><div class="freq-count">0</div></div>
+            <div class="freq-item" id="bar4"><div class="freq-label">4</div><div class="freq-bar-bg"><div class="freq-bar" style="width:0%"></div></div><div class="freq-count">0</div></div>
+            <div class="freq-item" id="bar5"><div class="freq-label">5</div><div class="freq-bar-bg"><div class="freq-bar" style="width:0%"></div></div><div class="freq-count">0</div></div>
+            <div class="freq-item" id="bar6"><div class="freq-label">6</div><div class="freq-bar-bg"><div class="freq-bar" style="width:0%"></div></div><div class="freq-count">0</div></div>
+          </div>
+          <div style="font-size:11px;color:var(--ink-soft);margin-top:0.4rem;">La linea teorica è 1/6 ≈ 16,7% per ogni faccia</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Probabilità teoriche con un dado</h3>
+    <table>
+      <thead><tr><th>Evento</th><th>Casi favorevoli</th><th>Casi totali</th><th>Probabilità</th><th>%</th></tr></thead>
+      <tbody>
+        <tr><td>Ottenere il 6</td><td>1 → {6}</td><td>6</td><td>1/6</td><td>≈ 16,7%</td></tr>
+        <tr><td>Numero pari</td><td>3 → {2,4,6}</td><td>6</td><td>3/6 = 1/2</td><td>50%</td></tr>
+        <tr><td>Numero dispari</td><td>3 → {1,3,5}</td><td>6</td><td>3/6 = 1/2</td><td>50%</td></tr>
+        <tr><td>Numero > 4</td><td>2 → {5,6}</td><td>6</td><td>2/6 = 1/3</td><td>≈ 33,3%</td></tr>
+        <tr><td>Numero primo</td><td>3 → {2,3,5}</td><td>6</td><td>3/6 = 1/2</td><td>50%</td></tr>
+        <tr><td>Numero ≤ 2</td><td>2 → {1,2}</td><td>6</td><td>2/6 = 1/3</td><td>≈ 33,3%</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SEZIONE 5: CARTE -->
+  <section class="section" id="carte">
+    <div class="section-num">Sezione 05</div>
+    <h2>Probabilità con le carte</h2>
+    <p>Un mazzo di carte da gioco italiano (napoletano) ha <strong>40 carte</strong>, divise in 4 semi (Coppe, Denari, Bastoni, Spade) da 10 carte ciascuno (1-7 + Fante, Cavallo, Re).</p>
+
+    <div class="interactive-panel">
+      <h4>🃏 Calcolatore di probabilità — Mazzo da 40 carte</h4>
+      <div style="margin-bottom:0.75rem;font-size:13px;color:var(--ink-mid);">Seleziona l'evento che ti interessa:</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:1rem;">
+        <label style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;">
+          <input type="radio" name="cardEvent" value="asso" onchange="calcCard(this)" style="accent-color:var(--navy);"> Estrarre un Asso
+        </label>
+        <label style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;">
+          <input type="radio" name="cardEvent" value="re" onchange="calcCard(this)"> Estrarre un Re
+        </label>
+        <label style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;">
+          <input type="radio" name="cardEvent" value="coppe" onchange="calcCard(this)"> Carta di Coppe
+        </label>
+        <label style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;">
+          <input type="radio" name="cardEvent" value="figura" onchange="calcCard(this)"> Carta figura (F,C,R)
+        </label>
+        <label style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;">
+          <input type="radio" name="cardEvent" value="numerica" onchange="calcCard(this)"> Carta numerica (1-7)
+        </label>
+        <label style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;">
+          <input type="radio" name="cardEvent" value="re_coppe" onchange="calcCard(this)"> Re di Coppe
+        </label>
+      </div>
+      <div class="prob-result" id="cardResult" style="display:none;">
+        <div class="prob-big" id="cardFrac">—</div>
+        <div>
+          <div class="prob-detail" id="cardDesc">—</div>
+          <div class="prob-detail" id="cardPct" style="font-weight:600;font-size:15px;margin-top:0.2rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Il mazzo napoletano da 40 carte</h3>
+    <table>
+      <thead><tr><th>Semi</th><th>Numerali (1-7)</th><th>Figure (F,C,R)</th><th>Totale per seme</th></tr></thead>
+      <tbody>
+        <tr><td>🏆 Coppe</td><td>7 carte</td><td>3 carte</td><td>10</td></tr>
+        <tr><td>🪙 Denari</td><td>7 carte</td><td>3 carte</td><td>10</td></tr>
+        <tr><td>🪄 Bastoni</td><td>7 carte</td><td>3 carte</td><td>10</td></tr>
+        <tr><td>⚔️ Spade</td><td>7 carte</td><td>3 carte</td><td>10</td></tr>
+        <tr style="background:var(--navy-light);"><td><strong>Totale</strong></td><td><strong>28 carte</strong></td><td><strong>12 carte</strong></td><td><strong>40 carte</strong></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SEZIONE 6: COMPATIBILI -->
+  <section class="section" id="compatibili">
+    <div class="section-num">Sezione 06</div>
+    <h2>Eventi compatibili e incompatibili</h2>
+
+    <h3>Eventi incompatibili (o mutualmente esclusivi)</h3>
+    <p>Due eventi sono <strong>incompatibili</strong> se non possono verificarsi contemporaneamente nello stesso esperimento.</p>
+    <div class="def-box coral">
+      <strong>Regola della somma (eventi incompatibili):</strong><br>
+      P(A ∪ B) = P(A) + P(B)
+    </div>
+    <div class="example-box">
+      <div class="example-header">📌 Esempio — Dado</div>
+      <div class="example-body">
+        <p>Nel lancio di un dado, ottenere il 3 e ottenere il 5 sono eventi <strong>incompatibili</strong> (non puoi ottenere entrambi con un solo lancio).</p>
+        <p>P(3 o 5) = P(3) + P(5) = 1/6 + 1/6 = <strong>2/6 = 1/3 ≈ 33,3%</strong></p>
+      </div>
+    </div>
+
+    <h3>Eventi compatibili</h3>
+    <p>Due eventi sono <strong>compatibili</strong> se possono verificarsi contemporaneamente. In questo caso, se sommiamo direttamente, contiamo due volte i casi in comune.</p>
+    <div class="def-box purple">
+      <strong>Regola della somma (eventi compatibili):</strong><br>
+      P(A ∪ B) = P(A) + P(B) − P(A ∩ B)
+    </div>
+    <div class="example-box">
+      <div class="example-header">📌 Esempio — Dado</div>
+      <div class="example-body">
+        <p>A = numero pari {2,4,6} → P(A) = 3/6<br>B = numero maggiore di 4 {5,6} → P(B) = 2/6<br>A ∩ B = numero pari E maggiore di 4 = {6} → P(A ∩ B) = 1/6</p>
+        <p>P(A ∪ B) = 3/6 + 2/6 − 1/6 = <strong>4/6 = 2/3 ≈ 66,7%</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEZIONE 7: INDIPENDENTI -->
+  <section class="section" id="indipendenti">
+    <div class="section-num">Sezione 07</div>
+    <h2>Eventi indipendenti</h2>
+    <p>Due eventi sono <strong>indipendenti</strong> se il verificarsi di uno non influenza in alcun modo la probabilità dell'altro.</p>
+    <div class="def-box teal">
+      <strong>Regola del prodotto (eventi indipendenti):</strong><br>
+      P(A ∩ B) = P(A) × P(B)
+    </div>
+    <div class="example-box">
+      <div class="example-header">📌 Esempio — Due dadi</div>
+      <div class="example-body">
+        <p>Lancio due dadi. Qual è la probabilità che il <em>primo</em> dia 6 e il <em>secondo</em> dia un numero pari?</p>
+        <ol class="step-list">
+          <li>P(primo = 6) = 1/6</li>
+          <li>P(secondo pari) = 3/6 = 1/2</li>
+          <li>I due lanci sono indipendenti, quindi: P = 1/6 × 1/2 = <strong>1/12 ≈ 8,3%</strong></li>
+        </ol>
+      </div>
+    </div>
+    <div class="def-box">
+      <strong>Attenzione:</strong> Gli eventi sono indipendenti nei lanci con <em>reinserimento</em> (la carta estratta viene rimessa nel mazzo). Se non c'è reinserimento, la probabilità cambia ad ogni estrazione!
+    </div>
+  </section>
+
+  <!-- SEZIONE 8: PROBABILITÀ COMPOSTA -->
+  <section class="section" id="composta">
+    <div class="section-num">Sezione 08</div>
+    <h2>Probabilità composta</h2>
+    <p>La probabilità composta riguarda il verificarsi di <strong>due o più eventi in sequenza</strong>. Si applica la regola del prodotto, tenendo conto se gli eventi sono indipendenti oppure no.</p>
+
+    <h3>Con reinserimento (eventi indipendenti)</h3>
+    <div class="example-box">
+      <div class="example-header">📌 Estrazione di carte CON reinserimento</div>
+      <div class="example-body">
+        <p>Estraggo una carta, la guardo, la rimetto nel mazzo. Poi estraggo di nuovo. Qual è la probabilità di estrarre due assi?</p>
+        <ol class="step-list">
+          <li>Prima estrazione: P(asso) = 4/40 = 1/10</li>
+          <li>Rimetto la carta → il mazzo torna a 40 carte</li>
+          <li>Seconda estrazione: P(asso) = 4/40 = 1/10 (invariata!)</li>
+          <li>P(due assi) = 1/10 × 1/10 = <strong>1/100 = 1%</strong></li>
+        </ol>
+      </div>
+    </div>
+
+    <h3>Senza reinserimento (eventi dipendenti)</h3>
+    <div class="example-box">
+      <div class="example-header">📌 Estrazione di carte SENZA reinserimento</div>
+      <div class="example-body">
+        <p>Estraggo una carta e la lascio fuori. Poi estraggo di nuovo. Qual è la probabilità di estrarre due assi?</p>
+        <ol class="step-list">
+          <li>Prima estrazione: P(asso) = 4/40 = 1/10</li>
+          <li>Il mazzo ora ha 39 carte, con 3 assi rimasti</li>
+          <li>Seconda estrazione: P(asso | già estratto 1 asso) = 3/39 = 1/13</li>
+          <li>P(due assi) = 1/10 × 1/13 = <strong>1/130 ≈ 0,77%</strong></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="formula-box">
+      <div class="label">Riepilogo — Regole fondamentali</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;text-align:left;margin-top:0.5rem;">
+        <div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Somma (incompatibili)</div>
+          <div class="formula" style="font-size:1.1rem;">P(A∪B) = P(A) + P(B)</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Somma (compatibili)</div>
+          <div class="formula" style="font-size:1.1rem;">P(A∪B) = P(A)+P(B)−P(A∩B)</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Prodotto (indipendenti)</div>
+          <div class="formula" style="font-size:1.1rem;">P(A∩B) = P(A) × P(B)</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Complementare</div>
+          <div class="formula" style="font-size:1.1rem;">P(Ā) = 1 − P(A)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEZIONE 9: ESERCIZI SVOLTI -->
+  <section class="section" id="esercizi">
+    <div class="section-num">Sezione 09</div>
+    <h2>Esercizi svolti</h2>
+    <p>Prova a risolvere ogni esercizio da solo, poi clicca su <em>Mostra soluzione</em> per confrontarti con il procedimento corretto.</p>
+
+    <!-- ES 1 -->
+    <div class="exercise-block">
+      <div class="exercise-header">
+        <h4>Esercizio 1 — Dado</h4>
+        <span class="ex-badge">Facile</span>
+      </div>
+      <div class="exercise-body">
+        <p>Lancio un dado a 6 facce. Calcola la probabilità di ottenere un numero <strong>divisore di 6</strong>.</p>
+        <input type="checkbox" class="solution-toggle" id="sol1">
+        <label class="solution-label" for="sol1">
+          <span>👁 Mostra soluzione</span>
+          <span class="arrow">▼</span>
+        </label>
+        <div class="solution-content">
+          <strong>Soluzione:</strong>
+          <ol class="step-list" style="margin-top:0.6rem;">
+            <li>Spazio campionario: Ω = {1, 2, 3, 4, 5, 6} → 6 casi totali</li>
+            <li>I divisori di 6 sono: 1, 2, 3, 6 → <strong>4 casi favorevoli</strong></li>
+            <li>P = 4/6 = <strong>2/3 ≈ 66,7%</strong></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- ES 2 -->
+    <div class="exercise-block">
+      <div class="exercise-header">
+        <h4>Esercizio 2 — Mazzo di carte</h4>
+        <span class="ex-badge">Medio</span>
+      </div>
+      <div class="exercise-body">
+        <p>Da un mazzo napoletano da 40 carte, estraggo una carta. Qual è la probabilità che sia <strong>una figura di Spade</strong>?</p>
+        <input type="checkbox" class="solution-toggle" id="sol2">
+        <label class="solution-label" for="sol2">
+          <span>👁 Mostra soluzione</span>
+          <span class="arrow">▼</span>
+        </label>
+        <div class="solution-content">
+          <strong>Soluzione:</strong>
+          <ol class="step-list" style="margin-top:0.6rem;">
+            <li>Casi totali: 40 carte</li>
+            <li>Le figure di Spade sono: Fante, Cavallo, Re di Spade → <strong>3 casi favorevoli</strong></li>
+            <li>P = 3/40 = <strong>0,075 = 7,5%</strong></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- ES 3 -->
+    <div class="exercise-block">
+      <div class="exercise-header">
+        <h4>Esercizio 3 — Evento complementare</h4>
+        <span class="ex-badge">Medio</span>
+      </div>
+      <div class="exercise-body">
+        <p>La probabilità che domani piova è del 30%. Qual è la probabilità che <strong>non piova</strong>?</p>
+        <input type="checkbox" class="solution-toggle" id="sol3">
+        <label class="solution-label" for="sol3">
+          <span>👁 Mostra soluzione</span>
+          <span class="arrow">▼</span>
+        </label>
+        <div class="solution-content">
+          <strong>Soluzione:</strong>
+          <ol class="step-list" style="margin-top:0.6rem;">
+            <li>P(pioggia) = 30% = 0,3</li>
+            <li>Usando la regola dell'evento complementare: P(non piove) = 1 − P(pioggia)</li>
+            <li>P(non piove) = 1 − 0,3 = <strong>0,7 = 70%</strong></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- ES 4 -->
+    <div class="exercise-block">
+      <div class="exercise-header">
+        <h4>Esercizio 4 — Probabilità composta</h4>
+        <span class="ex-badge">Difficile</span>
+      </div>
+      <div class="exercise-body">
+        <p>In un'urna ci sono 5 palline rosse e 3 blu. Estraggo una pallina, la rimetto e riestrago. Qual è la probabilità che la <strong>prima sia rossa e la seconda sia blu</strong>?</p>
+        <input type="checkbox" class="solution-toggle" id="sol4">
+        <label class="solution-label" for="sol4">
+          <span>👁 Mostra soluzione</span>
+          <span class="arrow">▼</span>
+        </label>
+        <div class="solution-content">
+          <strong>Soluzione:</strong>
+          <ol class="step-list" style="margin-top:0.6rem;">
+            <li>Totale palline: 5 + 3 = 8</li>
+            <li>P(prima rossa) = 5/8</li>
+            <li>Con reinserimento → urna invariata → P(seconda blu) = 3/8</li>
+            <li>Gli eventi sono indipendenti: P = 5/8 × 3/8 = <strong>15/64 ≈ 23,4%</strong></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- ES 5 -->
+    <div class="exercise-block">
+      <div class="exercise-header">
+        <h4>Esercizio 5 — Regola della somma</h4>
+        <span class="ex-badge">Difficile</span>
+      </div>
+      <div class="exercise-body">
+        <p>Lancio un dado. Qual è la probabilità di ottenere un numero <strong>pari oppure maggiore di 4</strong>?</p>
+        <input type="checkbox" class="solution-toggle" id="sol5">
+        <label class="solution-label" for="sol5">
+          <span>👁 Mostra soluzione</span>
+          <span class="arrow">▼</span>
+        </label>
+        <div class="solution-content">
+          <strong>Soluzione:</strong>
+          <ol class="step-list" style="margin-top:0.6rem;">
+            <li>A = pari = {2, 4, 6} → P(A) = 3/6</li>
+            <li>B = maggiore di 4 = {5, 6} → P(B) = 2/6</li>
+            <li>A ∩ B = pari E > 4 = {6} → P(A ∩ B) = 1/6</li>
+            <li>Sono eventi compatibili (6 soddisfa entrambi): P(A∪B) = 3/6 + 2/6 − 1/6 = <strong>4/6 = 2/3 ≈ 66,7%</strong></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEZIONE 10: QUIZ -->
+  <section class="section" id="quiz">
+    <div class="section-num">Sezione 10</div>
+    <h2>Test di verifica</h2>
+    <p>Metti alla prova le tue conoscenze con questo test. Seleziona la risposta corretta per ogni domanda. Al termine vedrai il tuo punteggio!</p>
+
+    <div id="quizContainer">
+
+      <div class="quiz-q" data-correct="b" id="q1">
+        <div class="quiz-text">1. Qual è la probabilità di ottenere un numero dispari lanciando un dado a 6 facce?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answerQ('q1','a')"><span class="opt-badge">A</span> 1/6 ≈ 16,7%</div>
+          <div class="quiz-option" onclick="answerQ('q1','b')"><span class="opt-badge">B</span> 1/2 = 50%</div>
+          <div class="quiz-option" onclick="answerQ('q1','c')"><span class="opt-badge">C</span> 2/3 ≈ 66,7%</div>
+          <div class="quiz-option" onclick="answerQ('q1','d')"><span class="opt-badge">D</span> 1/3 ≈ 33,3%</div>
+        </div>
+        <div class="quiz-feedback" id="fb1">I numeri dispari del dado sono 1, 3, 5 → 3 casi favorevoli su 6 totali → P = 3/6 = 1/2 = 50% ✓</div>
+      </div>
+
+      <div class="quiz-q" data-correct="c" id="q2">
+        <div class="quiz-text">2. Come si definisce un evento "impossibile"?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answerQ('q2','a')"><span class="opt-badge">A</span> Un evento con probabilità pari a 1</div>
+          <div class="quiz-option" onclick="answerQ('q2','b')"><span class="opt-badge">B</span> Un evento con probabilità compresa tra 0 e 1</div>
+          <div class="quiz-option" onclick="answerQ('q2','c')"><span class="opt-badge">C</span> Un evento con probabilità uguale a 0</div>
+          <div class="quiz-option" onclick="answerQ('q2','d')"><span class="opt-badge">D</span> Un evento che si verifica raramente</div>
+        </div>
+        <div class="quiz-feedback" id="fb2">Un evento impossibile non può mai verificarsi, quindi P = 0. P = 1 è invece un evento certo ✓</div>
+      </div>
+
+      <div class="quiz-q" data-correct="a" id="q3">
+        <div class="quiz-text">3. In un'urna con 4 palline rosse e 6 blu, qual è la probabilità di estrarne una rossa?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answerQ('q3','a')"><span class="opt-badge">A</span> 2/5 = 40%</div>
+          <div class="quiz-option" onclick="answerQ('q3','b')"><span class="opt-badge">B</span> 1/4 = 25%</div>
+          <div class="quiz-option" onclick="answerQ('q3','c')"><span class="opt-badge">C</span> 3/5 = 60%</div>
+          <div class="quiz-option" onclick="answerQ('q3','d')"><span class="opt-badge">D</span> 4/6 ≈ 66,7%</div>
+        </div>
+        <div class="quiz-feedback" id="fb3">Totale = 4+6 = 10. Casi favorevoli = 4 (rosse). P = 4/10 = 2/5 = 40% ✓</div>
+      </div>
+
+      <div class="quiz-q" data-correct="d" id="q4">
+        <div class="quiz-text">4. La probabilità che Alice vinca una gara è 0,4. Qual è la probabilità che NON vinca?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answerQ('q4','a')"><span class="opt-badge">A</span> 0,4</div>
+          <div class="quiz-option" onclick="answerQ('q4','b')"><span class="opt-badge">B</span> 0,5</div>
+          <div class="quiz-option" onclick="answerQ('q4','c')"><span class="opt-badge">C</span> 0,4 × 0,4 = 0,16</div>
+          <div class="quiz-option" onclick="answerQ('q4','d')"><span class="opt-badge">D</span> 0,6</div>
+        </div>
+        <div class="quiz-feedback" id="fb4">P(non vince) = 1 − P(vince) = 1 − 0,4 = 0,6 = 60% → regola dell'evento complementare ✓</div>
+      </div>
+
+      <div class="quiz-q" data-correct="b" id="q5">
+        <div class="quiz-text">5. Lancio un dado due volte. Qual è la probabilità di ottenere 6 entrambe le volte?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answerQ('q5','a')"><span class="opt-badge">A</span> 1/6 ≈ 16,7%</div>
+          <div class="quiz-option" onclick="answerQ('q5','b')"><span class="opt-badge">B</span> 1/36 ≈ 2,8%</div>
+          <div class="quiz-option" onclick="answerQ('q5','c')"><span class="opt-badge">C</span> 2/6 ≈ 33,3%</div>
+          <div class="quiz-option" onclick="answerQ('q5','d')"><span class="opt-badge">D</span> 1/12 ≈ 8,3%</div>
+        </div>
+        <div class="quiz-feedback" id="fb5">I due lanci sono indipendenti → P = P(6) × P(6) = 1/6 × 1/6 = 1/36 ≈ 2,8% ✓</div>
+      </div>
+
+      <div class="quiz-q" data-correct="c" id="q6">
+        <div class="quiz-text">6. Qual è la regola corretta per la somma di due eventi COMPATIBILI A e B?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answerQ('q6','a')"><span class="opt-badge">A</span> P(A∪B) = P(A) + P(B)</div>
+          <div class="quiz-option" onclick="answerQ('q6','b')"><span class="opt-badge">B</span> P(A∪B) = P(A) × P(B)</div>
+          <div class="quiz-option" onclick="answerQ('q6','c')"><span class="opt-badge">C</span> P(A∪B) = P(A) + P(B) − P(A∩B)</div>
+          <div class="quiz-option" onclick="answerQ('q6','d')"><span class="opt-badge">D</span> P(A∪B) = P(A) − P(B)</div>
+        </div>
+        <div class="quiz-feedback" id="fb6">Per eventi compatibili si sottrae P(A∩B) per non contare due volte i casi in comune ✓</div>
+      </div>
+
+      <div style="text-align:center;margin-top:1.5rem;">
+        <button class="btn-primary" onclick="showScore()" style="background:var(--teal);padding:0.75rem 2rem;font-size:15px;">
+          🏆 Calcola il mio punteggio
+        </button>
+      </div>
+
+      <div class="quiz-score" id="quizScore">
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);margin-bottom:0.3rem;">Il tuo punteggio</div>
+        <div class="score-big" id="scoreNum">—</div>
+        <div class="score-sub" id="scoreMsg"></div>
+        <button onclick="resetQuiz()" style="margin-top:1.25rem;background:rgba(255,255,255,0.15);color:#fff;border:1.5px solid rgba(255,255,255,0.3);border-radius:8px;padding:0.5rem 1.2rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;">🔄 Ricomincia il test</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:var(--navy);padding:2rem 3rem;color:rgba(255,255,255,0.5);font-size:13px;">
+    <div style="color:rgba(255,255,255,0.8);font-weight:600;margin-bottom:0.4rem;font-family:'Literata',serif;">Probabilità e Statistica — Terza Media</div>
+    <div>Guida didattica completa con esempi pratici, esercizi svolti e test di verifica.</div>
+    <div style="margin-top:0.4rem;font-size:12px;">Buono studio! 📚</div>
+  </footer>
+
+</main>
+
+<script>
+  // ===== DICE SIMULATOR =====
+  const diceEmojis = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+  let freq = [0,0,0,0,0,0];
+  let total = 0;
+  let evenCnt = 0;
+
+  function rollDice() {
+    const val = Math.floor(Math.random()*6)+1;
+    freq[val-1]++;
+    total++;
+    if(val%2===0) evenCnt++;
+    document.getElementById('diceEmoji').textContent = diceEmojis[val-1];
+    document.getElementById('diceResult').textContent = 'Hai ottenuto: ' + val;
+    document.getElementById('lastRoll').textContent = val;
+    document.getElementById('totalRolls').textContent = total;
+    document.getElementById('evenCount').textContent = evenCnt;
+    updateBars();
+  }
+
+  function rollMany(n) {
+    for(let i=0;i<n;i++){
+      const val = Math.floor(Math.random()*6)+1;
+      freq[val-1]++;
+      total++;
+      if(val%2===0) evenCnt++;
+    }
+    const last = [1,2,3,4,5,6][freq.indexOf(Math.max(...freq))];
+    document.getElementById('diceEmoji').textContent = diceEmojis[last-1];
+    document.getElementById('diceResult').textContent = n + ' lanci eseguiti!';
+    document.getElementById('lastRoll').textContent = '—';
+    document.getElementById('totalRolls').textContent = total;
+    document.getElementById('evenCount').textContent = evenCnt;
+    updateBars();
+  }
+
+  function updateBars() {
+    const max = Math.max(...freq,1);
+    for(let i=1;i<=6;i++){
+      const pct = total>0 ? (freq[i-1]/total*100).toFixed(1) : 0;
+      const bar = document.querySelector('#bar'+i+' .freq-bar');
+      const cnt = document.querySelector('#bar'+i+' .freq-count');
+      bar.style.width = (freq[i-1]/max*100)+'%';
+      cnt.textContent = freq[i-1];
+    }
+  }
+
+  function resetDice() {
+    freq = [0,0,0,0,0,0];
+    total = 0; evenCnt = 0;
+    document.getElementById('diceEmoji').textContent = '⬜';
+    document.getElementById('diceResult').textContent = 'Clicca il dado o il pulsante!';
+    document.getElementById('lastRoll').textContent = '—';
+    document.getElementById('totalRolls').textContent = '0';
+    document.getElementById('evenCount').textContent = '0';
+    updateBars();
+  }
+
+  // ===== CARD CALCULATOR =====
+  const cardData = {
+    asso:     { fav: 4, tot: 40, desc: 'Ci sono 4 assi (uno per seme)' },
+    re:       { fav: 4, tot: 40, desc: 'Ci sono 4 Re (uno per seme)' },
+    coppe:    { fav: 10, tot: 40, desc: '10 carte per ogni seme' },
+    figura:   { fav: 12, tot: 40, desc: '3 figure × 4 semi = 12 figure totali' },
+    numerica: { fav: 28, tot: 40, desc: '7 numerali × 4 semi = 28 carte numeriche' },
+    re_coppe: { fav: 1, tot: 40, desc: "C'è un solo Re di Coppe nel mazzo" },
+  };
+
+  function gcd(a,b){ return b?gcd(b,a%b):a; }
+  function simplify(n,d){ const g=gcd(n,d); return [n/g,d/g]; }
+
+  function calcCard(el) {
+    const ev = el.value;
+    const d = cardData[ev];
+    const [fn,fd] = simplify(d.fav, d.tot);
+    const pct = (d.fav/d.tot*100).toFixed(1);
+    document.getElementById('cardResult').style.display='flex';
+    document.getElementById('cardFrac').textContent = fn+'/'+fd;
+    document.getElementById('cardDesc').textContent = d.desc + ' → P = '+d.fav+'/'+d.tot;
+    document.getElementById('cardPct').textContent = pct+'%';
+  }
+
+  // ===== QUIZ =====
+  let answered = {};
+
+  function answerQ(qId, chosen) {
+    if(answered[qId]) return;
+    answered[qId] = chosen;
+    const q = document.getElementById(qId);
+    const correct = q.dataset.correct;
+    const opts = q.querySelectorAll('.quiz-option');
+    const labels = ['a','b','c','d'];
+    opts.forEach((opt,i)=>{
+      if(labels[i]===correct) opt.classList.add('correct');
+      else if(labels[i]===chosen && chosen!==correct) opt.classList.add('wrong');
+    });
+    const num = qId.replace('q','');
+    const fb = document.getElementById('fb'+num);
+    fb.classList.add('show');
+    fb.classList.add(chosen===correct ? 'correct' : 'wrong');
+  }
+
+  function showScore() {
+    let score = 0;
+    for(let i=1;i<=6;i++){
+      const q = document.getElementById('q'+i);
+      if(answered['q'+i] && answered['q'+i]===q.dataset.correct) score++;
+    }
+    const total = 6;
+    const el = document.getElementById('quizScore');
+    el.classList.add('show');
+    document.getElementById('scoreNum').textContent = score+'/'+total;
+    const msgs = {
+      0:'Ripassa la teoria e riprova! 💪',
+      1:'Continua a studiare, ce la farai! 📖',
+      2:'Buono sforzo, ma c\'è ancora da lavorare 📚',
+      3:'Abbastanza bene! Rivedi i punti deboli 🙂',
+      4:'Bravo! Con ancora un po\' di pratica sarai perfetto 👍',
+      5:'Ottimo! Sei quasi pronto per l\'esame 🎉',
+      6:'Perfetto! Sei prontissimo per l\'esame! 🏆'
+    };
+    document.getElementById('scoreMsg').textContent = msgs[score];
+    el.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+
+  function resetQuiz() {
+    answered = {};
+    document.querySelectorAll('.quiz-option').forEach(o=>{
+      o.classList.remove('correct','wrong');
+    });
+    document.querySelectorAll('.quiz-feedback').forEach(f=>{
+      f.classList.remove('show','correct','wrong');
+    });
+    document.getElementById('quizScore').classList.remove('show');
+  }
+
+  // ===== ACTIVE NAV =====
+  const sections = document.querySelectorAll('section[id],header[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        navLinks.forEach(l=>l.classList.remove('active'));
+        const active = document.querySelector('.nav-link[href="#'+e.target.id+'"]');
+        if(active) active.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-30% 0px -60% 0px'});
+  sections.forEach(s=>observer.observe(s));
+</script>
+</body>
+</html>
