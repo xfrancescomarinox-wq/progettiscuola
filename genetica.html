@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genetica — Guida per Ragazzi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a472a;
+    --green-mid:  #2d6a4f;
+    --green-soft: #52b788;
+    --green-pale: #d8f3dc;
+    --teal:       #168aad;
+    --teal-light: #b5e2fa;
+    --amber:      #e07b39;
+    --amber-light:#fde8d0;
+    --cream:      #faf6f0;
+    --ink:        #1c1c1c;
+    --muted:      #6b7a6e;
+    --white:      #ffffff;
+    --shadow:     0 4px 24px rgba(26,71,42,0.10);
+    --radius:     16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--green-deep);
+    color: var(--white);
+    padding: 80px 24px 70px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(82,183,136,.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 30%, rgba(22,138,173,.18) 0%, transparent 55%);
+  }
+  .hero-dna {
+    font-size: 72px;
+    line-height: 1;
+    display: block;
+    margin-bottom: 16px;
+    animation: float 4s ease-in-out infinite;
+    position: relative;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 900;
+    letter-spacing: -1px;
+    position: relative;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--green-soft);
+  }
+  .hero-sub {
+    margin-top: 12px;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,.75);
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+  }
+  .hero-pills {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 28px;
+    position: relative;
+  }
+  .pill {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.22);
+    color: var(--white);
+    padding: 6px 16px;
+    border-radius: 99px;
+    font-size: .85rem;
+    font-weight: 500;
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .2s;
+  }
+  .pill:hover { background: rgba(255,255,255,.22); }
+
+  /* ── NAV PROGRESS ── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 4px;
+    background: var(--green-soft);
+    width: 0%;
+    z-index: 999;
+    transition: width .15s;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 64px 0 0; }
+
+  /* ── SECTION HEADER ── */
+  .sec-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .sec-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .sec-icon.green  { background: var(--green-pale); }
+  .sec-icon.teal   { background: var(--teal-light); }
+  .sec-icon.amber  { background: var(--amber-light); }
+  .sec-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--green-deep);
+    line-height: 1.15;
+  }
+  .sec-num {
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+    display: block;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    border-left: 5px solid var(--green-soft);
+    animation: fadeUp .5s ease both;
+  }
+  .card.teal-border  { border-left-color: var(--teal); }
+  .card.amber-border { border-left-color: var(--amber); }
+  .card.no-border    { border-left: none; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--green-deep);
+    margin-bottom: 10px;
+  }
+  .card p { color: #374040; margin-bottom: 10px; }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* ── ANALOGY BOX ── */
+  .analogy {
+    background: var(--green-pale);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-top: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .analogy-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .analogy strong { font-weight: 600; color: var(--green-deep); display: block; margin-bottom: 3px; font-size: .9rem; }
+  .analogy p { font-size: .93rem; margin: 0; color: var(--green-mid); }
+
+  /* ── GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:580px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* ── DNA VISUAL ── */
+  .dna-visual {
+    background: var(--green-deep);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+  .dna-strand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .dna-pair {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    font-size: 1rem;
+    animation: slideIn .4s ease both;
+  }
+  .dna-pair:nth-child(1) { animation-delay: .0s; }
+  .dna-pair:nth-child(2) { animation-delay: .1s; }
+  .dna-pair:nth-child(3) { animation-delay: .2s; }
+  .dna-pair:nth-child(4) { animation-delay: .3s; }
+  .dna-pair:nth-child(5) { animation-delay: .4s; }
+  .dna-pair:nth-child(6) { animation-delay: .5s; }
+  .dna-pair:nth-child(7) { animation-delay: .6s; }
+  @keyframes slideIn {
+    from { opacity:0; transform: translateX(-20px); }
+    to   { opacity:1; transform: translateX(0); }
+  }
+  .base { width: 42px; text-align: center; padding: 5px 0; border-radius: 8px; font-size: .9rem; }
+  .base.A { background: #e63946; color: #fff; }
+  .base.T { background: #457b9d; color: #fff; }
+  .base.G { background: #2a9d8f; color: #fff; }
+  .base.C { background: #e9c46a; color: #1c1c1c; }
+  .bond { width: 50px; border-top: 2px dashed rgba(255,255,255,.35); display: flex; align-items: center; justify-content: center; font-size: .65rem; color: rgba(255,255,255,.5); padding: 0 4px; }
+  .dna-legend {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 18px;
+  }
+  .leg { display: flex; align-items: center; gap: 6px; font-size: .8rem; color: rgba(255,255,255,.8); }
+  .leg-dot { width: 14px; height: 14px; border-radius: 4px; }
+
+  /* ── MENDEL GRID ── */
+  .punnett {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    gap: 4px;
+    max-width: 260px;
+    margin: 16px auto;
+  }
+  .punnett-cell {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--green-deep);
+  }
+  .punnett-header { background: var(--green-mid); color: var(--white); border-radius: 8px; }
+  .punnett-dom  { background: #d8f3dc; }
+  .punnett-rec  { background: #ffe8d6; }
+
+  /* ── EXPANDABLE ── */
+  .expand-btn {
+    background: none; border: none; width: 100%; text-align: left;
+    cursor: pointer; padding: 0; display: flex; justify-content: space-between; align-items: center;
+  }
+  .expand-btn h3 { pointer-events: none; }
+  .expand-arrow {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--green-pale); display: flex; align-items: center; justify-content: center;
+    font-size: 14px; transition: transform .3s; flex-shrink: 0;
+    color: var(--green-deep);
+  }
+  .expand-arrow.open { transform: rotate(180deg); }
+  .expand-body { display: none; padding-top: 14px; }
+  .expand-body.open { display: block; }
+
+  /* ── DISEASE CARD ── */
+  .disease-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 14px; }
+  .disease-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 20px 18px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    border-top: 4px solid var(--green-soft);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .disease-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+  .disease-card.rec { border-top-color: var(--teal); }
+  .disease-card.dom { border-top-color: var(--amber); }
+  .disease-card.sex { border-top-color: #c77dff; }
+  .disease-card h4 { font-family:'Playfair Display',serif; font-size: 1rem; margin-bottom: 6px; color: var(--ink); }
+  .disease-card p  { font-size: .85rem; color: var(--muted); line-height: 1.5; }
+  .disease-tag { display: inline-block; font-size: .72rem; font-weight: 600; padding: 2px 10px; border-radius: 99px; margin-bottom: 8px; }
+  .tag-rec { background: var(--teal-light); color: var(--teal); }
+  .tag-dom { background: var(--amber-light); color: var(--amber); }
+  .tag-sex { background: #e8d5ff; color: #7b2fbe; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+    color: var(--white);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin: 24px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .highlight::after {
+    content: '🧬';
+    position: absolute; right: 24px; top: 50%; transform: translateY(-50%);
+    font-size: 72px; opacity: .12;
+  }
+  .highlight h3 { font-family:'Playfair Display',serif; font-size: 1.3rem; margin-bottom: 10px; }
+  .highlight p { opacity: .9; font-size: .95rem; }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 14px; }
+  .step {
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .step-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--green-deep); color: var(--white);
+    font-weight: 700; font-size: .9rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .step-body h4 { font-weight: 600; margin-bottom: 4px; color: var(--green-deep); }
+  .step-body p  { font-size: .92rem; color: #374040; }
+
+  /* ── QUIZ ── */
+  .quiz-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    box-shadow: var(--shadow);
+    margin-top: 32px;
+  }
+  .quiz-q { font-family:'Playfair Display',serif; font-size: 1.15rem; color: var(--green-deep); margin-bottom: 18px; }
+  .quiz-opts { display: flex; flex-direction: column; gap: 10px; }
+  .quiz-opt {
+    background: var(--cream);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 12px 18px;
+    cursor: pointer;
+    transition: all .2s;
+    font-size: .95rem;
+    text-align: left;
+  }
+  .quiz-opt:hover { border-color: var(--green-soft); background: var(--green-pale); }
+  .quiz-opt.correct { border-color: #2d6a4f; background: var(--green-pale); color: var(--green-deep); font-weight: 600; }
+  .quiz-opt.wrong   { border-color: #e63946; background: #ffe0e3; color: #9b1c24; }
+  .quiz-feedback { margin-top: 14px; padding: 12px 16px; border-radius: 10px; font-size: .92rem; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok  { background: var(--green-pale); color: var(--green-deep); }
+  .quiz-feedback.ko  { background: #ffe0e3; color: #9b1c24; }
+  .quiz-nav { display: flex; gap: 10px; margin-top: 18px; align-items: center; }
+  .quiz-btn {
+    background: var(--green-deep); color: var(--white);
+    border: none; border-radius: 99px; padding: 9px 22px;
+    cursor: pointer; font-size: .9rem; font-weight: 600;
+    transition: background .2s;
+  }
+  .quiz-btn:hover { background: var(--green-mid); }
+  .quiz-score { font-size: .85rem; color: var(--muted); margin-left: auto; }
+
+  /* ── GLOSSARY ── */
+  .glossary { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media(max-width:540px) { .glossary { grid-template-columns: 1fr; } }
+  .gloss-item { background: var(--white); border-radius: 12px; padding: 16px 20px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+  .gloss-term { font-weight: 700; color: var(--green-deep); font-size: .95rem; margin-bottom: 4px; }
+  .gloss-def  { font-size: .87rem; color: #4a5a4e; line-height: 1.55; }
+
+  /* ── CHROMOSOME VIS ── */
+  .chrom-vis {
+    display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 20px 0;
+  }
+  .chrom {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    cursor: default;
+  }
+  .chrom-body {
+    width: 18px; height: 48px;
+    border-radius: 6px;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  .chrom-body::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px; height: 3px;
+    background: rgba(255,255,255,.5);
+    border-radius: 2px;
+  }
+  .chrom-top { flex:1; border-radius: 5px 5px 0 0; }
+  .chrom-bot { flex:1; border-radius: 0 0 5px 5px; }
+  .chrom-num { font-size: .6rem; color: var(--muted); }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 80px;
+    background: var(--green-deep);
+    color: rgba(255,255,255,.65);
+    text-align: center;
+    padding: 36px 24px;
+    font-size: .85rem;
+  }
+  footer strong { color: var(--white); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green-pale), transparent);
+    margin: 56px 0 0;
+  }
+
+  /* ── TOOLTIP ── */
+  [data-tip] { border-bottom: 1.5px dashed var(--green-soft); cursor: help; }
+  [data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    background: var(--green-deep);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: .8rem;
+    white-space: nowrap;
+    z-index: 10;
+    margin-top: 4px;
+    transform: translateX(-50%);
+    left: 50%;
+  }
+  [data-tip] { position: relative; }
+
+  /* ── SCROLLTOP ── */
+  .scrolltop {
+    position: fixed; bottom: 28px; right: 24px;
+    background: var(--green-deep); color: var(--white);
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    font-size: 18px; opacity: 0; transition: opacity .3s;
+    text-decoration: none;
+    z-index: 100;
+  }
+  .scrolltop.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+<a class="scrolltop" id="scrolltop" href="#top">↑</a>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <span class="hero-dna">🧬</span>
+  <h1>La <em>Genetica</em></h1>
+  <p class="hero-sub">Tutto quello che devi sapere su DNA, geni ed ereditarietà — spiegato semplice, una volta per tutte.</p>
+  <div class="hero-pills">
+    <a class="pill" href="#cos-e">Che cos'è</a>
+    <a class="pill" href="#dna">DNA</a>
+    <a class="pill" href="#cromosomi">Cromosomi</a>
+    <a class="pill" href="#mendel">Mendel</a>
+    <a class="pill" href="#malattie">Malattie</a>
+    <a class="pill" href="#mutazioni">Mutazioni</a>
+    <a class="pill" href="#quiz">Quiz</a>
+  </div>
+</section>
+
+<!-- 1. CHE COS'È LA GENETICA -->
+<section class="section container" id="cos-e">
+  <div class="sec-header">
+    <div class="sec-icon green">🔬</div>
+    <div>
+      <span class="sec-num">01 — Introduzione</span>
+      <h2 class="sec-title">Che cos'è la Genetica?</h2>
+    </div>
+  </div>
+
+  <div class="card">
+    <p>La <strong>genetica</strong> è la scienza che studia <strong>l'ereditarietà</strong> e la <strong>variabilità</strong> tra gli esseri viventi. In parole semplici: si occupa di capire perché sei fatto come sei, e perché somigli (o non somigli) ai tuoi genitori.</p>
+    <div class="analogy">
+      <span class="analogy-icon">💡</span>
+      <div>
+        <strong>Analogia facile</strong>
+        <p>Immagina di ricevere in regalo un libro di ricette da tua mamma e uno da tuo papà. Ogni pagina è un'istruzione per costruire una parte del tuo corpo. La genetica studia proprio quel "libro di istruzioni".</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card no-border" style="border-left: 5px solid var(--teal);">
+      <h3>🧬 I Geni</h3>
+      <p>Sono le unità di informazione ereditaria, trasmesse di generazione in generazione. Ogni gene contiene le istruzioni per costruire una caratteristica del tuo corpo (colore degli occhi, tipo di capelli…).</p>
+    </div>
+    <div class="card no-border" style="border-left: 5px solid var(--amber);">
+      <h3>📚 Il Genoma</h3>
+      <p>È l'insieme di tutti i geni di un organismo. Puoi pensarlo come una <em>carta d'identità biologica</em>: ogni essere vivente ha la sua, unica e irripetibile.</p>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <h3>Il DNA sulla scena del crimine</h3>
+    <p>Gli investigatori usano il DNA per identificare persone: da una singola cellula (su un bicchiere, un capello, degli occhiali dimenticati) è possibile risalire all'identità di un individuo. Questo perché il DNA di ogni persona è praticamente unico!</p>
+  </div>
+</section>
+
+<div class="divider container"></div>
+
+<!-- 2. IL DNA -->
+<section class="section container" id="dna">
+  <div class="sec-header">
+    <div class="sec-icon teal">🧪</div>
+    <div>
+      <span class="sec-num">02 — La molecola della vita</span>
+      <h2 class="sec-title">Il DNA</h2>
+    </div>
+  </div>
+
+  <div class="card teal-border">
+    <p>Il <strong>DNA</strong> (acido desossiribonucleico) è una lunghissima molecola presente nel nucleo di quasi tutte le cellule. Contiene tutte le informazioni necessarie a costruire e far funzionare il tuo corpo.</p>
+    <div class="analogy">
+      <span class="analogy-icon">🎵</span>
+      <div>
+        <strong>Il DNA come spartito musicale</strong>
+        <p>Se il corpo fosse un'orchestra, il DNA sarebbe lo spartito: stabilisce quali note suonare, in quale ordine, per ottenere la melodia giusta (= il corpo funzionante).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DNA visual -->
+  <div class="dna-visual">
+    <p style="color:rgba(255,255,255,.7); font-size:.85rem; margin-bottom:16px;">La doppia elica del DNA — le basi azotate si appaiano sempre allo stesso modo</p>
+    <div class="dna-strand">
+      <div class="dna-pair"><span class="base A">A</span><span class="bond">══</span><span class="base T">T</span></div>
+      <div class="dna-pair"><span class="base G">G</span><span class="bond">≡≡</span><span class="base C">C</span></div>
+      <div class="dna-pair"><span class="base T">T</span><span class="bond">══</span><span class="base A">A</span></div>
+      <div class="dna-pair"><span class="base C">C</span><span class="bond">≡≡</span><span class="base G">G</span></div>
+      <div class="dna-pair"><span class="base A">A</span><span class="bond">══</span><span class="base T">T</span></div>
+      <div class="dna-pair"><span class="base G">G</span><span class="bond">≡≡</span><span class="base C">C</span></div>
+      <div class="dna-pair"><span class="base T">T</span><span class="bond">══</span><span class="base A">A</span></div>
+    </div>
+    <div class="dna-legend">
+      <div class="leg"><div class="leg-dot" style="background:#e63946"></div> A = Adenina</div>
+      <div class="leg"><div class="leg-dot" style="background:#457b9d"></div> T = Timina</div>
+      <div class="leg"><div class="leg-dot" style="background:#2a9d8f"></div> G = Guanina</div>
+      <div class="leg"><div class="leg-dot" style="background:#e9c46a"></div> C = Citosina</div>
+    </div>
+    <p style="color:rgba(255,255,255,.6); font-size:.8rem; margin-top:14px;">Regola: A si lega sempre con T &nbsp;|&nbsp; G si lega sempre con C</p>
+  </div>
+
+  <div class="card teal-border">
+    <h3>I Nucleotidi — i mattoncini del DNA</h3>
+    <p>Il DNA è composto da milioni di piccole unità chiamate <strong>nucleotidi</strong>. Ogni nucleotide ha tre parti:</p>
+    <div class="steps" style="margin-top:14px;">
+      <div class="step">
+        <div class="step-num" style="background:var(--teal)">1</div>
+        <div class="step-body"><h4>Gruppo fosfato</h4><p>È la "spina dorsale" che collega un nucleotide al successivo.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--teal)">2</div>
+        <div class="step-body"><h4>Desossiribosio (zucchero)</h4><p>Lo zucchero che dà il nome al DNA (De-ossiribo-nucleico).</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--teal)">3</div>
+        <div class="step-body"><h4>Base azotata</h4><p>Può essere A, T, G o C. È la "lettera" del codice genetico: cambiando l'ordine delle lettere si ottengono istruzioni diverse.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card teal-border">
+      <h3>📝 Trascrizione</h3>
+      <p>Il messaggio del DNA viene copiato su una molecola di <strong>RNA messaggero (mRNA)</strong>, che funge da intermediario. È come fotocopiare una pagina del libro di istruzioni per portarla dove serve.</p>
+    </div>
+    <div class="card teal-border">
+      <h3>⚙️ Traduzione</h3>
+      <p>L'mRNA viene letto dai <strong>ribosomi</strong>, che costruiscono le <strong>proteine</strong> secondo le istruzioni. Ogni tripletta di tre basi (codone) corrisponde a un amminoacido.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider container"></div>
+
+<!-- 3. CROMOSOMI -->
+<section class="section container" id="cromosomi">
+  <div class="sec-header">
+    <div class="sec-icon green">🔭</div>
+    <div>
+      <span class="sec-num">03 — Struttura</span>
+      <h2 class="sec-title">Cromosomi e Geni</h2>
+    </div>
+  </div>
+
+  <div class="card">
+    <p>Il DNA non fluttua libero nel nucleo: si avvolge attorno a proteine speciali e si compatta formando i <strong>cromosomi</strong>, strutture visibili al microscopio durante la divisione cellulare.</p>
+    <div class="analogy">
+      <span class="analogy-icon">🧶</span>
+      <div>
+        <strong>Come un gomitolo di lana</strong>
+        <p>Se il DNA fosse un lungo filo di lana, i cromosomi sarebbero i gomitoli in cui viene arrotolato per non fare nodi. Ogni cromosoma contiene migliaia di geni.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chromosome visualization -->
+  <div class="card no-border" style="background:var(--green-deep); padding:24px;">
+    <p style="color:rgba(255,255,255,.7); text-align:center; font-size:.85rem; margin-bottom:16px;">Le 23 coppie di cromosomi umani (cariotipo)</p>
+    <div class="chrom-vis">
+      <!-- 23 pairs with alternating colors -->
+      <script>
+        // This will be rendered by the browser
+      </script>
+      <!-- We'll do this via JS below -->
+    </div>
+    <p style="color:rgba(255,255,255,.6); text-align:center; font-size:.78rem; margin-top:10px;">Le cellule somatiche umane contengono 46 cromosomi (23 coppie). L'ultima coppia determina il sesso biologico: XX = femmina, XY = maschio.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>🔀 Mitosi</h3>
+      <p>La divisione delle cellule <em>del corpo</em> (somatiche). Produce <strong>2 cellule identiche</strong> alla cellula madre, con lo stesso numero di cromosomi (46 = diploidi). Serve per crescere e riparare i tessuti.</p>
+    </div>
+    <div class="card">
+      <h3>⚡ Meiosi</h3>
+      <p>La divisione delle cellule <em>riproduttive</em>. Produce <strong>4 gameti</strong> (spermatozoi/ovuli) con metà dei cromosomi (23 = aploidi). Quando due gameti si uniscono si torna a 46!</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔑 Termini chiave da memorizzare</h3>
+    <div class="steps" style="margin-top: 12px;">
+      <div class="step">
+        <div class="step-num">A</div>
+        <div class="step-body"><h4>Cromosomi omologhi</h4><p>I due cromosomi di una coppia: uno viene dalla mamma, uno dal papà. Portano gli stessi geni nello stesso ordine, ma possono avere versioni diverse (alleli).</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">B</div>
+        <div class="step-body"><h4>Cromatidi fratelli</h4><p>Dopo che il DNA si è duplicato, ogni cromosoma è composto da due copie identiche unite nel centromero.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">C</div>
+        <div class="step-body"><h4>Locus genico</h4><p>La posizione precisa di un gene su un cromosoma. Come un indirizzo: "Via Colore-degli-occhi, numero 7, Cromosoma 15".</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider container"></div>
+
+<!-- 4. MENDEL -->
+<section class="section container" id="mendel">
+  <div class="sec-header">
+    <div class="sec-icon amber">🌱</div>
+    <div>
+      <span class="sec-num">04 — Le Leggi di Mendel</span>
+      <h2 class="sec-title">Gregor Mendel e i piselli</h2>
+    </div>
+  </div>
+
+  <div class="card amber-border">
+    <p>Gregor Mendel era un monaco austriaco dell'Ottocento con la passione per le piante. Incrociando migliaia di piante di pisello <em>(Pisum sativum)</em> scoprì le regole fondamentali dell'ereditarietà — senza sapere nulla di DNA o cromosomi!</p>
+    <div class="analogy">
+      <span class="analogy-icon">🫛</span>
+      <div>
+        <strong>Perché proprio i piselli?</strong>
+        <p>Facili da coltivare, ciclo vitale breve, si possono impollinare a mano. Ogni carattere si presentava in forme ben distinte: o liscio o rugoso, o giallo o verde, o alto o basso.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 Laws -->
+  <div class="card amber-border">
+    <button class="expand-btn" onclick="toggleExpand(this)">
+      <h3>📜 1ª Legge — Dominanza</h3>
+      <span class="expand-arrow">▼</span>
+    </button>
+    <div class="expand-body">
+      <p>Quando si incrociano due varietà pure che differiscono per un carattere, tutti i figli della prima generazione (F1) mostrano solo il carattere <strong>dominante</strong>.</p>
+      <p style="margin-top:8px;">Esempio: pianta alta (AA) × pianta bassa (aa) → tutti i figli F1 sono alti (Aa). Il gene "basso" non scompare, rimane nascosto!</p>
+      <div class="analogy" style="margin-top:12px;">
+        <span class="analogy-icon">👕</span>
+        <div>
+          <strong>Analogia</strong>
+          <p>Se metti una maglietta rossa sopra una bianca, vedi solo il rosso. La bianca c'è ancora, ma è coperta. L'allele dominante "copre" quello recessivo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card amber-border">
+    <button class="expand-btn" onclick="toggleExpand(this)">
+      <h3>📜 2ª Legge — Segregazione</h3>
+      <span class="expand-arrow">▼</span>
+    </button>
+    <div class="expand-body">
+      <p>Durante la formazione dei gameti, i due alleli di un gene si <strong>separano</strong> (segregano): ogni gamete riceve uno solo dei due alleli.</p>
+      <p style="margin-top:8px;">Incrociando i figli F1 tra loro si ottiene nella generazione F2 un rapporto 3:1 (3 dominanti : 1 recessivo).</p>
+      <!-- Punnett square -->
+      <p style="font-size:.85rem; color:var(--muted); margin: 14px 0 4px; text-align:center;">Quadrato di Punnett — incrocio Aa × Aa</p>
+      <div class="punnett">
+        <div class="punnett-cell punnett-header"></div>
+        <div class="punnett-cell punnett-header">A</div>
+        <div class="punnett-cell punnett-header">a</div>
+        <div class="punnett-cell punnett-header">A</div>
+        <div class="punnett-cell punnett-dom">AA</div>
+        <div class="punnett-cell punnett-dom">Aa</div>
+        <div class="punnett-cell punnett-header">a</div>
+        <div class="punnett-cell punnett-dom">Aa</div>
+        <div class="punnett-cell punnett-rec">aa</div>
+      </div>
+      <p style="font-size:.83rem; text-align:center; color:var(--muted); margin-top:8px;">
+        🟢 AA (omozigote dominante) &nbsp;|&nbsp; 🟢 Aa (eterozigote) &nbsp;|&nbsp; 🟠 aa (omozigote recessivo)
+      </p>
+    </div>
+  </div>
+
+  <div class="card amber-border">
+    <button class="expand-btn" onclick="toggleExpand(this)">
+      <h3>📜 3ª Legge — Assortimento Indipendente</h3>
+      <span class="expand-arrow">▼</span>
+    </button>
+    <div class="expand-body">
+      <p>Le coppie di alleli per caratteri diversi si separano in modo <strong>indipendente</strong> l'una dall'altra durante la formazione dei gameti.</p>
+      <p style="margin-top:8px;">In un incrocio per due caratteri (diibrido) i figli F2 si distribuiscono con rapporto <strong>9:3:3:1</strong>.</p>
+      <div class="analogy" style="margin-top:12px;">
+        <span class="analogy-icon">🎲</span>
+        <div>
+          <strong>Come lanciare due dadi</strong>
+          <p>Il risultato del primo dado non influenza il secondo. Così il colore degli occhi è indipendente dal colore dei capelli (almeno nella visione semplificata di Mendel).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key terms -->
+  <div class="card amber-border" style="margin-top:0">
+    <h3>📖 Vocabolario fondamentale</h3>
+    <div class="glossary" style="margin-top:16px;">
+      <div class="gloss-item">
+        <div class="gloss-term">Allele</div>
+        <div class="gloss-def">Forma alternativa di un gene (es. A = alto, a = basso).</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">Dominante / Recessivo</div>
+        <div class="gloss-def">L'allele dominante si manifesta sempre; il recessivo solo se presente in due copie (aa).</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">Genotipo</div>
+        <div class="gloss-def">Il corredo di alleli di un individuo (es. Aa, AA, aa). Non sempre visibile dall'esterno.</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">Fenotipo</div>
+        <div class="gloss-def">L'aspetto fisico osservabile (es. alto, basso). Dipende dal genotipo e dall'ambiente.</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">Omozigote</div>
+        <div class="gloss-def">Porta due alleli identici: AA (omozigote dominante) o aa (omozigote recessivo).</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">Eterozigote</div>
+        <div class="gloss-def">Porta due alleli diversi: Aa. Spesso è "portatore sano" dell'allele recessivo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider container"></div>
+
+<!-- 5. MALATTIE GENETICHE -->
+<section class="section container" id="malattie">
+  <div class="sec-header">
+    <div class="sec-icon teal">🏥</div>
+    <div>
+      <span class="sec-num">05 — Genetica e salute</span>
+      <h2 class="sec-title">Malattie Genetiche</h2>
+    </div>
+  </div>
+
+  <div class="card teal-border">
+    <p>Alcune malattie vengono trasmesse dai genitori ai figli attraverso gli alleli. Si dividono in tre grandi categorie a seconda del tipo di trasmissione.</p>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif; color:var(--teal); margin: 24px 0 14px; font-size:1.1rem;">Trasmissione autosomica recessiva</h3>
+  <p style="font-size:.9rem; color:var(--muted); margin-bottom:14px;">La malattia si manifesta solo se il bambino eredita due alleli recessivi (uno da ciascun genitore). I genitori possono essere "portatori sani" (Aa) senza saperlo.</p>
+
+  <div class="disease-grid">
+    <div class="disease-card rec">
+      <span class="disease-tag tag-rec">Recessiva</span>
+      <h4>Anemia Falciforme</h4>
+      <p>I globuli rossi assumono una forma a falce e non trasportano bene l'ossigeno. Chi è eterozigote (Aa) è più resistente alla malaria!</p>
+    </div>
+    <div class="disease-card rec">
+      <span class="disease-tag tag-rec">Recessiva</span>
+      <h4>Fibrosi Cistica</h4>
+      <p>Una proteina difettosa causa accumulo di muco nelle vie respiratorie, rendendo difficile respirare e digerire.</p>
+    </div>
+    <div class="disease-card rec">
+      <span class="disease-tag tag-rec">Recessiva</span>
+      <h4>Albinismo</h4>
+      <p>Mancanza di melanina (il pigmento che dà colore a pelle, capelli e occhi). La pelle è molto sensibile alla luce solare.</p>
+    </div>
+    <div class="disease-card rec">
+      <span class="disease-tag tag-rec">Recessiva</span>
+      <h4>Fenilchetonuria</h4>
+      <p>Un enzima mancante causa accumulo di fenilalanina nel sangue, che può danneggiare il sistema nervoso. Si tratta con la dieta.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif; color:var(--amber); margin: 28px 0 14px; font-size:1.1rem;">Trasmissione autosomica dominante</h3>
+  <p style="font-size:.9rem; color:var(--muted); margin-bottom:14px;">Basta un solo allele dominante difettoso (Aa) per manifestare la malattia. Chi è malato ha il 50% di probabilità di trasmetterla ai figli.</p>
+
+  <div class="disease-grid">
+    <div class="disease-card dom">
+      <span class="disease-tag tag-dom">Dominante</span>
+      <h4>Còrea di Huntington</h4>
+      <p>Malattia neurologica progressiva che si manifesta in età adulta. I sintomi includono movimenti involontari e declino cognitivo.</p>
+    </div>
+    <div class="disease-card dom">
+      <span class="disease-tag tag-dom">Dominante</span>
+      <h4>Polidattilia</h4>
+      <p>Presenza di dita soprannumerarie alle mani o ai piedi. L'espressione del gene è molto variabile.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif; color:#7b2fbe; margin: 28px 0 14px; font-size:1.1rem;">Ereditarietà legata al sesso (cromosoma X)</h3>
+  <p style="font-size:.9rem; color:var(--muted); margin-bottom:14px;">Il gene difettoso si trova sul cromosoma X. I maschi (XY) hanno solo un X, quindi basta un allele recessivo per ammalarsi. Le femmine (XX) di solito sono portatrici sane.</p>
+
+  <div class="disease-grid">
+    <div class="disease-card sex">
+      <span class="disease-tag tag-sex">Legata all'X</span>
+      <h4>Emofilia A</h4>
+      <p>Il sangue non riesce a coagulare correttamente per la mancanza del fattore VIII. Colpisce quasi esclusivamente i maschi.</p>
+    </div>
+    <div class="disease-card sex">
+      <span class="disease-tag tag-sex">Legata all'X</span>
+      <h4>Daltonismo</h4>
+      <p>Difficoltà a distinguere certi colori (spesso rosso e verde). Colpisce circa l'8% dei maschi e solo lo 0,5% delle femmine.</p>
+    </div>
+  </div>
+
+  <div class="card teal-border" style="margin-top:20px;">
+    <h3>🔢 Sindrome di Down — Trisomia 21</h3>
+    <p>Non tutte le differenze genetiche dipendono dai geni singoli. La sindrome di Down è causata dalla presenza di <strong>tre</strong> copie del cromosoma 21 invece di due (trisomia). Avviene per un errore nella meiosi chiamato <em>non-disgiunzione</em>.</p>
+    <div class="analogy">
+      <span class="analogy-icon">📋</span>
+      <div>
+        <strong>Cosa succede?</strong>
+        <p>Durante la meiosi i cromosomi 21 non si separano correttamente: il gamete finisce con due copie del cromosoma 21, e dopo la fecondazione il nascituro ne avrà tre. Il rischio aumenta con l'età della madre.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider container"></div>
+
+<!-- 6. MUTAZIONI -->
+<section class="section container" id="mutazioni">
+  <div class="sec-header">
+    <div class="sec-icon amber">⚡</div>
+    <div>
+      <span class="sec-num">06 — Cambiamenti nel DNA</span>
+      <h2 class="sec-title">Le Mutazioni</h2>
+    </div>
+  </div>
+
+  <div class="card amber-border">
+    <p>Una <strong>mutazione</strong> è qualsiasi cambiamento nel materiale genetico. Non sono sempre negative: la variabilità genetica che le mutazioni generano è il motore dell'evoluzione!</p>
+    <div class="analogy">
+      <span class="analogy-icon">✏️</span>
+      <div>
+        <strong>Come un refuso nel testo</strong>
+        <p>Immagina di copiare un testo di 3 miliardi di caratteri (tanti quanti le basi del DNA umano). Qualche errore è inevitabile. Alcuni cambiano il senso della frase, altri no.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card amber-border">
+      <h3>🔹 Mutazioni Puntiformi</h3>
+      <p>Coinvolgono uno o pochi nucleotidi:</p>
+      <ul style="margin-top:8px; margin-left:18px; font-size:.92rem; color:#374040;">
+        <li><strong>Sostituzione</strong>: una base viene sostituita con un'altra</li>
+        <li><strong>Inserzione</strong>: si aggiunge una base in più</li>
+        <li><strong>Delezione</strong>: si perde una base</li>
+      </ul>
+    </div>
+    <div class="card amber-border">
+      <h3>🔸 Mutazioni Cromosomiche</h3>
+      <p>Riguardano interi tratti di cromosoma o il numero di cromosomi. Esempi:</p>
+      <ul style="margin-top:8px; margin-left:18px; font-size:.92rem; color:#374040;">
+        <li>Trisomia (3 copie invece di 2)</li>
+        <li>Delezione di un segmento cromosomico</li>
+        <li>Inversione di un tratto</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card amber-border">
+    <h3>🌍 Mutazioni e Ambiente</h3>
+    <p>L'espressione dei geni può essere influenzata dall'ambiente. Un esempio curioso: i gatti siamesi hanno un gene per il colore del pelo che si attiva solo a basse temperature. Per questo orecchie, zampe e coda (le parti più fredde del corpo) sono scure, mentre il resto è chiaro!</p>
+  </div>
+</section>
+
+<div class="divider container"></div>
+
+<!-- 7. GRUPPI SANGUIGNI -->
+<section class="section container" id="sangue">
+  <div class="sec-header">
+    <div class="sec-icon green">🩸</div>
+    <div>
+      <span class="sec-num">07 — Genetica applicata</span>
+      <h2 class="sec-title">Gruppi Sanguigni</h2>
+    </div>
+  </div>
+
+  <div class="card">
+    <p>Il gruppo sanguigno è un esempio di carattere genetico determinato da <strong>tre alleli</strong> (I<sup>A</sup>, I<sup>B</sup>, i) dello stesso gene. I<sup>A</sup> e I<sup>B</sup> sono codominanti tra loro, entrambi dominanti su i.</p>
+  </div>
+
+  <div class="disease-grid" style="grid-template-columns: repeat(auto-fill, minmax(160px,1fr));">
+    <div class="disease-card" style="border-top-color:#e63946; text-align:center;">
+      <h4 style="font-size:2rem; margin-bottom:4px;">A</h4>
+      <p>Genotipo: I<sup>A</sup>I<sup>A</sup> o I<sup>A</sup>i</p>
+    </div>
+    <div class="disease-card" style="border-top-color:#457b9d; text-align:center;">
+      <h4 style="font-size:2rem; margin-bottom:4px;">B</h4>
+      <p>Genotipo: I<sup>B</sup>I<sup>B</sup> o I<sup>B</sup>i</p>
+    </div>
+    <div class="disease-card" style="border-top-color:#6a0dad; text-align:center;">
+      <h4 style="font-size:2rem; margin-bottom:4px;">AB</h4>
+      <p>Genotipo: I<sup>A</sup>I<sup>B</sup> (codominanza!)</p>
+    </div>
+    <div class="disease-card" style="border-top-color:#2a9d8f; text-align:center;">
+      <h4 style="font-size:2rem; margin-bottom:4px;">0</h4>
+      <p>Genotipo: ii (omozigote recessivo)</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>⚠️ Fattore Rh</h3>
+    <p>Il fattore Rh è determinato da un altro gene con due alleli: Rh+ (dominante) e Rh− (recessivo). Una mamma Rh− che aspetta un figlio Rh+ può produrre anticorpi contro il sangue fetale: è un rischio da monitorare con esami specifici in gravidanza.</p>
+  </div>
+</section>
+
+<div class="divider container"></div>
+
+<!-- QUIZ -->
+<section class="section container" id="quiz" style="padding-bottom:0">
+  <div class="sec-header">
+    <div class="sec-icon green">🎯</div>
+    <div>
+      <span class="sec-num">08 — Metti alla prova</span>
+      <h2 class="sec-title">Mini Quiz</h2>
+    </div>
+  </div>
+
+  <div class="quiz-card" id="quiz-container">
+    <div class="quiz-q" id="quiz-q"></div>
+    <div class="quiz-opts" id="quiz-opts"></div>
+    <div class="quiz-feedback" id="quiz-fb"></div>
+    <div class="quiz-nav">
+      <button class="quiz-btn" id="quiz-next" onclick="nextQuestion()" style="display:none">Prossima →</button>
+      <span class="quiz-score" id="quiz-score"></span>
+    </div>
+  </div>
+</section>
+
+<!-- GLOSSARY -->
+<section class="section container" style="padding-bottom:0">
+  <div class="sec-header">
+    <div class="sec-icon teal">📖</div>
+    <div>
+      <span class="sec-num">09 — Riferimento rapido</span>
+      <h2 class="sec-title">Glossario</h2>
+    </div>
+  </div>
+
+  <div class="glossary">
+    <div class="gloss-item"><div class="gloss-term">DNA</div><div class="gloss-def">Acido desossiribonucleico. La molecola che contiene il patrimonio genetico.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Gene</div><div class="gloss-def">Tratto di DNA che contiene le istruzioni per una caratteristica ereditaria.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Genoma</div><div class="gloss-def">L'insieme completo dei geni di un organismo.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Cromosoma</div><div class="gloss-def">DNA compattato attorno a proteine, visibile durante la divisione cellulare.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Allele</div><div class="gloss-def">Versione alternativa di un gene presente in una popolazione.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Fenotipo</div><div class="gloss-def">Le caratteristiche fisiche osservabili di un organismo.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Genotipo</div><div class="gloss-def">Il corredo genetico (alleli) che un individuo possiede.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Meiosi</div><div class="gloss-def">Divisione cellulare che produce i gameti (cellule sessuali) aploidi.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Mitosi</div><div class="gloss-def">Divisione cellulare che produce due cellule somatiche identiche diploidi.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Mutazione</div><div class="gloss-def">Qualsiasi cambiamento nel materiale genetico di un organismo.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Proteina</div><div class="gloss-def">Molecola prodotta dalla traduzione dell'mRNA, che svolge la maggior parte delle funzioni cellulari.</div></div>
+    <div class="gloss-item"><div class="gloss-term">Cariotipo</div><div class="gloss-def">Il profilo cromosomico di un individuo, ottenuto fotografando e ordinando i cromosomi.</div></div>
+  </div>
+</section>
+
+<footer>
+  <strong>🧬 Genetica per la Terza Media</strong><br>
+  Materiale didattico basato sulla dispensa di Genetica 2022–2023.<br>
+  Per approfondire chiedi al tuo insegnante o consulta un buon libro di biologia!
+</footer>
+
+<script>
+// ── Progress bar ──
+const progress = document.getElementById('progress');
+const scrolltop = document.getElementById('scrolltop');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progress.style.width = pct + '%';
+  scrolltop.classList.toggle('show', h.scrollTop > 300);
+});
+
+// ── Expand / Collapse ──
+function toggleExpand(btn) {
+  const arrow = btn.querySelector('.expand-arrow');
+  const body = btn.parentElement.querySelector('.expand-body');
+  arrow.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// ── Chromosome visualization ──
+(function() {
+  const colors = ['#52b788','#168aad','#e07b39','#c77dff','#457b9d','#2a9d8f','#e63946',
+                  '#6a9fb5','#b5838d','#f4a261','#81b29a','#e9c46a','#264653',
+                  '#52b788','#168aad','#e07b39','#c77dff','#457b9d','#2a9d8f','#e63946',
+                  '#6a9fb5','#b5838d','#f4a261'];
+  const vis = document.querySelector('.chrom-vis');
+  if (!vis) return;
+  for (let i = 1; i <= 23; i++) {
+    const c = colors[i-1];
+    const h = 36 + Math.random() * 24 | 0;
+    const div = document.createElement('div');
+    div.className = 'chrom';
+    const label = i === 23 ? 'XY' : String(i);
+    div.innerHTML = `
+      <div class="chrom-body" style="background:${c}; height:${h}px; width:16px; border-radius:5px; position:relative;">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:22px;height:2.5px;background:rgba(255,255,255,.45);border-radius:2px;"></div>
+      </div>
+      <span class="chrom-num">${label}</span>`;
+    vis.appendChild(div);
+  }
+})();
+
+// ── Quiz ──
+const questions = [
+  {
+    q: "Che cosa studia la genetica?",
+    opts: ["I meccanismi dell'ereditarietà e la variabilità tra organismi","La struttura delle proteine","Il comportamento degli animali","La composizione dell'atmosfera"],
+    ans: 0,
+    exp: "✅ Esatto! La genetica studia l'ereditarietà (come i caratteri passano dai genitori ai figli) e la variabilità (perché siamo tutti diversi)."
+  },
+  {
+    q: "Quali basi azotate si appaiano nel DNA?",
+    opts: ["A con G, T con C","A con T, G con C","A con C, G con T","A con A, T con T"],
+    ans: 1,
+    exp: "✅ Perfetto! Adenina (A) si lega sempre con Timina (T), Guanina (G) sempre con Citosina (C). Questa complementarietà è fondamentale per la replicazione del DNA."
+  },
+  {
+    q: "Un individuo eterozigote per il carattere altezza (Aa) viene incrociato con un altro eterozigote (Aa). Quale percentuale di figli sarà basso (recessivo)?",
+    opts: ["50%","75%","100%","25%"],
+    ans: 3,
+    exp: "✅ Giusto! Dal quadrato di Punnett: AA (25%) + Aa (50%) + aa (25%). Solo il 25% dei figli sarà basso (aa), il 75% avrà fenotipo alto."
+  },
+  {
+    q: "Quante cellule produce la meiosi e con quanti cromosomi ciascuna?",
+    opts: ["2 cellule con 46 cromosomi","4 cellule con 23 cromosomi","2 cellule con 23 cromosomi","4 cellule con 46 cromosomi"],
+    ans: 1,
+    exp: "✅ Corretto! La meiosi produce 4 gameti aploidi con 23 cromosomi ciascuno. Quando due gameti si uniscono (fecondazione) tornano a 46."
+  },
+  {
+    q: "Perché il daltonismo colpisce più i maschi che le femmine?",
+    opts: ["I maschi hanno una dieta diversa","Il gene è sul cromosoma Y","Il gene è sul cromosoma X: i maschi (XY) hanno solo un X, quindi basta un allele recessivo","Le femmine hanno anticorpi specifici"],
+    ans: 2,
+    exp: "✅ Esatto! Essendo il gene sul cromosoma X, i maschi (che hanno solo un X) non possono 'nascondere' l'allele recessivo con una seconda copia dominante come fanno le femmine (XX)."
+  },
+  {
+    q: "Cos'è il fenotipo di un organismo?",
+    opts: ["L'insieme di tutti i suoi geni","Le sue caratteristiche fisiche osservabili","Il numero di cromosomi che possiede","La sequenza delle basi del DNA"],
+    ans: 1,
+    exp: "✅ Giusto! Il fenotipo è l'aspetto esterno osservabile (colore degli occhi, altezza, gruppo sanguigno…). Il genotipo invece è il corredo genetico sottostante."
+  },
+  {
+    q: "La sindrome di Down è causata da:",
+    opts: ["Una mutazione puntiforme nel DNA","La presenza di tre cromosomi 21 (trisomia 21)","Un allele dominante difettoso","Una delezione sul cromosoma X"],
+    ans: 1,
+    exp: "✅ Corretto! La sindrome di Down è causata dalla trisomia 21: per un errore nella meiosi (non-disgiunzione), il nascituro riceve tre copie del cromosoma 21 invece di due."
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = false;
+
+function renderQuestion() {
+  const q = questions[current];
+  document.getElementById('quiz-q').textContent = `${current+1}/${questions.length} — ${q.q}`;
+  const opts = document.getElementById('quiz-opts');
+  opts.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt;
+    btn.onclick = () => selectAnswer(i);
+    opts.appendChild(btn);
+  });
+  document.getElementById('quiz-fb').className = 'quiz-feedback';
+  document.getElementById('quiz-fb').textContent = '';
+  document.getElementById('quiz-next').style.display = 'none';
+  document.getElementById('quiz-score').textContent = `Punteggio: ${score}/${questions.length}`;
+  answered = false;
+}
+
+function selectAnswer(i) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach((btn, idx) => {
+    if (idx === q.ans) btn.classList.add('correct');
+    else if (idx === i && i !== q.ans) btn.classList.add('wrong');
+    btn.style.pointerEvents = 'none';
+  });
+  const fb = document.getElementById('quiz-fb');
+  if (i === q.ans) {
+    score++;
+    fb.className = 'quiz-feedback show ok';
+    fb.textContent = q.exp;
+  } else {
+    fb.className = 'quiz-feedback show ko';
+    fb.textContent = `❌ Non proprio. La risposta corretta era: "${q.opts[q.ans]}". ${q.exp.replace('✅ ','ℹ️ ')}`;
+  }
+  document.getElementById('quiz-score').textContent = `Punteggio: ${score}/${questions.length}`;
+  if (current < questions.length - 1) {
+    document.getElementById('quiz-next').style.display = 'inline-block';
+  } else {
+    const nextBtn = document.getElementById('quiz-next');
+    nextBtn.textContent = '🔄 Riprova';
+    nextBtn.style.display = 'inline-block';
+    nextBtn.onclick = restartQuiz;
+  }
+}
+
+function nextQuestion() {
+  current++;
+  renderQuestion();
+}
+
+function restartQuiz() {
+  current = 0; score = 0;
+  document.getElementById('quiz-next').onclick = nextQuestion;
+  document.getElementById('quiz-next').textContent = 'Prossima →';
+  renderQuestion();
+}
+
+renderQuestion();
+</script>
+</body>
+</html>
